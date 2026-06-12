@@ -7,7 +7,6 @@ import "dotenv/config";
 import express from "express";
 import crypto from "crypto";
 
-import { createServer as createViteServer } from "vite";
 import path from "path";
 import fs from "fs";
 import cors from "cors";
@@ -727,6 +726,7 @@ async function startServer() {
   app.use("/vcf", express.static(path.join(process.cwd(), "public/vcf")));
 
   if (process.env.NODE_ENV !== "production") {
+    const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
