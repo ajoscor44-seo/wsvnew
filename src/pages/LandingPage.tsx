@@ -131,7 +131,8 @@ export const LandingPage = () => {
         try {
           data = JSON.parse(text);
         } catch (e) {
-          throw new Error("Server returned an invalid response");
+          console.error("Invalid response body from server:", text);
+          throw new Error(`Server returned an invalid response (Status ${response.status})`);
         }
 
         if (response.ok) {

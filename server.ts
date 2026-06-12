@@ -21,9 +21,17 @@ const app = express();
 const PORT = 3000;
 
 // Supabase Setup
-const supabaseUrl = process.env.VITE_SUPABASE_URL || "";
-const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY || "";
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const supabaseUrl = process.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.error("WARNING: Supabase URL or Anon Key is missing from environment variables!");
+}
+
+const supabase = createClient(
+  supabaseUrl || "https://placeholder-url.supabase.co", 
+  supabaseAnonKey || "placeholder-anon-key"
+);
 
 // Storage Setup
 const VCF_DIR = path.join(process.cwd(), "public/vcf");
