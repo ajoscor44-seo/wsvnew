@@ -1,0 +1,285 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import "tailwindcss";
+
+
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-body-md: "Inter", sans-serif;
+  --font-label-md: "Inter", sans-serif;
+  --font-headline: "Plus Jakarta Sans", sans-serif;
+  --font-headline-lg: "Plus Jakarta Sans", sans-serif;
+  --font-body-lg: "Inter", sans-serif;
+  --font-stats-number: "Plus Jakarta Sans", sans-serif;
+  --font-headline-lg-mobile: "Plus Jakarta Sans", sans-serif;
+  --font-display-lg: "Plus Jakarta Sans", sans-serif;
+  --font-headline-md: "Plus Jakarta Sans", sans-serif;
+
+  /* Font sizes - these power text-* utilities */
+  --text-display-lg: 48px;
+  --text-display-lg--line-height: 1.1;
+  --text-headline-lg: 32px;
+  --text-headline-lg--line-height: 1.2;
+  --text-headline-lg-mobile: 28px;
+  --text-headline-lg-mobile--line-height: 1.2;
+  --text-headline-md: 24px;
+  --text-headline-md--line-height: 1.3;
+  --text-body-lg: 18px;
+  --text-body-lg--line-height: 1.6;
+  --text-body-md: 16px;
+  --text-body-md--line-height: 1.5;
+  --text-label-md: 14px;
+  --text-label-md--line-height: 1;
+  --text-stats-number: 40px;
+  --text-stats-number--line-height: 1;
+
+  --color-primary: #4ff07f;
+  --color-primary-container: #25d366;
+  --color-on-primary: #003915;
+  --color-on-primary-container: #005523;
+  --color-on-primary-fixed: #002109;
+  --color-on-primary-fixed-variant: #005322;
+  --color-primary-fixed: #66ff8e;
+  --color-primary-fixed-dim: #3de273;
+
+  --color-secondary: #72d8c8;
+  --color-secondary-container: #34a192;
+  --color-on-secondary: #003731;
+  --color-on-secondary-container: #00302a;
+  --color-on-secondary-fixed: #00201c;
+  --color-on-secondary-fixed-variant: #005047;
+  --color-secondary-fixed: #8ff4e3;
+  --color-secondary-fixed-dim: #72d8c8;
+
+  --color-tertiary: #f8d100;
+  --color-tertiary-container: #d8b600;
+  --color-on-tertiary: #3a3000;
+  --color-on-tertiary-container: #574800;
+  --color-on-tertiary-fixed: #221b00;
+  --color-accent: #f8d100;
+  --color-accent-container: #d8b600;
+  --color-on-tertiary-fixed-variant: #544600;
+  --color-tertiary-fixed: #ffe16d;
+  --color-tertiary-fixed-dim: #e9c400;
+
+  --color-background: #131313;
+  --color-on-background: #e5e2e1;
+  --color-surface: #131313;
+  --color-on-surface: #e5e2e1;
+  --color-on-surface-variant: #bbcbb9;
+  --color-outline: #869584;
+  --color-outline-variant: #3c4a3d;
+
+  --color-surface-dim: #131313;
+  --color-surface-bright: #393939;
+  --color-surface-container-lowest: #0e0e0e;
+  --color-surface-container-low: #1c1b1b;
+  --color-surface-container: #201f1f;
+  --color-surface-container-high: #2a2a2a;
+  --color-surface-container-highest: #353534;
+
+  --color-error: #ffb4ab;
+  --color-error-container: #93000a;
+  --color-on-error: #690005;
+  --color-on-error-container: #ffdad6;
+
+  --spacing-gutter: 24px;
+  --spacing-stack-sm: 12px;
+  --spacing-container-max: 1280px;
+  --spacing-margin-mobile: 16px;
+  --spacing-stack-md: 24px;
+  --spacing-base: 8px;
+  --spacing-margin-desktop: 40px;
+  --spacing-stack-lg: 48px;
+
+  --radius-DEFAULT: 0.25rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
+
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.8; }
+  }
+}
+
+@layer utilities {
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-shimmer {
+    background-size: 200% 100%;
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  .animate-glow-pulse {
+    animation: glow-pulse 3s ease-in-out infinite;
+  }
+  
+  .glass-card {
+    background: rgba(28, 31, 33, 0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .ambient-glow {
+    box-shadow: 0 0 50px -10px rgba(37, 211, 102, 0.1);
+  }
+
+  .premium-glow {
+    box-shadow: 0 0 30px -5px rgba(248, 209, 0, 0.15);
+  }
+
+  .marquee {
+    animation: marquee 25s linear infinite;
+  }
+
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+
+  .glass-card-dark {
+    @apply bg-white/5 backdrop-blur-2xl border border-white/10 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.3)];
+  }
+  
+  .glass-nav {
+    @apply bg-white/70 backdrop-blur-2xl border-b border-white/30 sticky top-0 z-50;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent;
+  }
+
+  .text-gradient-alt {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-secondary to-accent;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-black px-6 py-3.5 sm:px-8 sm:py-4 rounded-2xl font-bold uppercase tracking-widest text-[10px] sm:text-[11px] transition-all hover:bg-secondary hover:scale-105 active:scale-95 shadow-xl shadow-primary/15 flex items-center justify-center gap-2;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-black px-6 py-3.5 sm:px-8 sm:py-4 rounded-2xl font-bold uppercase tracking-widest text-[10px] sm:text-[11px] transition-all hover:bg-primary hover:scale-105 active:scale-95 shadow-xl shadow-secondary/15 flex items-center justify-center gap-2;
+  }
+
+  /* Responsive section padding */
+  .section-p {
+    @apply py-16 sm:py-24 md:py-32 px-4 sm:px-6 md:px-12;
+  }
+
+  /* Responsive card radius */
+  .card-radius {
+    @apply rounded-2xl sm:rounded-3xl md:rounded-[3rem];
+  }
+
+  .card-radius-lg {
+    @apply rounded-3xl sm:rounded-[3rem] md:rounded-[4rem];
+  }
+
+  .noise-bg {
+    position: relative;
+  }
+
+  .noise-bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Hide scrollbar for filter bars */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-surface text-on-surface font-sans antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Prevent horizontal overflow */
+  #root {
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary/10 rounded-full hover:bg-primary/20 transition-colors;
+  }
+
+  /* WordPress Content Styling */
+  .wp-content h1 {
+    @apply text-2xl sm:text-3xl md:text-5xl font-black font-headline text-primary mb-8 sm:mb-12 mt-12 sm:mt-20 leading-tight tracking-tighter;
+  }
+  .wp-content h2 {
+    @apply text-xl sm:text-2xl md:text-4xl font-black font-headline text-primary mb-6 sm:mb-8 mt-10 sm:mt-16 leading-tight tracking-tight;
+  }
+  .wp-content h3 {
+    @apply text-lg sm:text-xl md:text-3xl font-black font-headline text-primary mb-4 sm:mb-6 mt-8 sm:mt-12 leading-tight;
+  }
+  .wp-content h4 {
+    @apply text-base sm:text-lg md:text-xl font-black font-headline text-primary mb-3 sm:mb-4 mt-6 sm:mt-10 uppercase tracking-widest;
+  }
+  .wp-content p {
+    @apply text-base sm:text-lg md:text-xl text-on-surface-variant leading-[1.8] font-medium mb-6 sm:mb-10;
+  }
+  .wp-content ul, .wp-content ol {
+    @apply mb-6 sm:mb-10 ml-4 sm:ml-6 space-y-3 sm:space-y-4;
+  }
+  .wp-content li {
+    @apply text-base sm:text-lg text-on-surface-variant font-medium list-disc;
+  }
+  .wp-content img {
+    @apply rounded-xl sm:rounded-2xl md:rounded-[3rem] shadow-xl sm:shadow-2xl my-8 sm:my-16 border border-primary/5 mx-auto max-w-[800px] w-full h-auto object-contain block;
+  }
+  .wp-content a {
+    @apply text-secondary font-bold underline hover:text-primary transition-colors;
+  }
+  .wp-content blockquote {
+    @apply border-l-4 sm:border-l-8 border-accent bg-accent/5 p-6 sm:p-10 rounded-r-2xl sm:rounded-r-3xl italic text-lg sm:text-2xl text-primary my-8 sm:my-16;
+  }
+}
+
+
