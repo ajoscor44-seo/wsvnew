@@ -230,16 +230,24 @@ export const LandingPage = () => {
   const joins = ["0706***5678", "0812***0921", "0905***1143", "0803***8822", "0704***4432"];
   const faqs = [
     {
-      q: "Can I increase views for free?",
-      a: "Yes, our Free tier allows you to participate in the general sync pool, though priority levels are lower than premium plans.",
+      q: "How can I increase WhatsApp Status views?",
+      a: "One of the most effective ways is to grow your contact network, create engaging content, post consistently, and encourage interactions from your audience.",
     },
     {
-      q: "Does it work on iPhone?",
-      a: "Absolutely. WSV VCF files are compatible with both iOS and Android contact systems.",
+      q: "Is WSV suitable for businesses?",
+      a: "Yes. Many entrepreneurs, vendors, marketers, and service providers use WhatsApp as a major sales and communication channel.",
     },
     {
-      q: "Is my data secure?",
-      a: "We use end-to-end encryption for all sync data and never store your personal conversations.",
+      q: "Does it work on Android and iPhone?",
+      a: "Yes. VCF contact files can be used on both Android and iOS devices.",
+    },
+    {
+      q: "Can beginners use WSV?",
+      a: "Absolutely. The process is simple and designed for users of all experience levels.",
+    },
+    {
+      q: "Is my information protected?",
+      a: "We are committed to maintaining user privacy and continuously improving platform security and operational standards.",
     },
   ];
 
@@ -251,14 +259,29 @@ export const LandingPage = () => {
           <div className="space-y-stack-md">
             <div className="inline-flex items-center gap-2 bg-primary-container/20 border border-primary/20 px-4 py-1.5 rounded-full text-primary font-label-md text-label-md">
               <span className="material-symbols-outlined text-[18px]">verified</span>
-              Nigeria's #1 Growth Engine
+              Nigeria's Leading WhatsApp Growth Network
             </div>
-            <h1 className="font-display-lg text-display-lg md:text-[64px] tracking-tight leading-[1.05] text-white">
-              #1 WhatsApp Growth Terminal: <span className="text-primary">Explode</span> Your Reach
+            <h1 className="font-display-lg text-display-lg md:text-[54px] tracking-tight leading-[1.1] text-white">
+              Increase WhatsApp Status Views <span className="text-primary">Fast</span> – Nigeria's Leading WhatsApp Growth Network
             </h1>
-            <p className="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
-              Join 2 million+ users growing their status views daily. No ads, no bots, just pure organic network synchronization. Nigeria's largest VCF terminal.
-            </p>
+            <div className="space-y-4 text-on-surface-variant max-w-xl">
+              <h2 className="text-xl font-bold text-white font-headline">Grow Your WhatsApp Status Reach Organically</h2>
+              <p className="font-body-md text-body-md">
+                Want to increase your WhatsApp Status views and reach more people every day?
+              </p>
+              <p className="font-body-md text-body-md">
+                Our WhatsApp Status Views Network helps creators, business owners, vendors, affiliate marketers, influencers, and digital entrepreneurs grow their audience through a powerful contact synchronization system designed to expand visibility and increase engagement.
+              </p>
+              <p className="font-body-md text-body-md">
+                Whether you're promoting products, services, content, events, or personal brands, having more active contacts means more people can see your WhatsApp Status updates.
+              </p>
+              <p className="font-body-md text-body-md">
+                Join thousands of users who are growing their reach daily through our WhatsApp contact exchange ecosystem.
+              </p>
+              <p className="font-body-md text-body-md font-bold text-primary mt-2">
+                More Contacts. More Reach. More Views. More Opportunities.
+              </p>
+            </div>
             <div className="flex flex-col sm:flex-row gap-4 pt-4 w-full">
               <Link
                 to="/download"
@@ -364,27 +387,33 @@ export const LandingPage = () => {
             </div>
           </div>
           <div className="space-y-6">
-            <h2 className="font-headline-lg text-headline-lg text-white">What Is WSV?</h2>
-            <p className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
-              WSV (WhatsApp Status Views) is a proprietary growth engine designed to synchronize organic contacts across the largest digital ecosystem in Africa. Unlike traditional marketing, WSV builds trust-based peer networks through automated VCF generation, ensuring your message lands in the pockets of active, real human beings.
+            <h2 className="font-headline-lg text-headline-lg text-white">What Is WhatsApp Status Views (WSV)?</h2>
+            <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              WhatsApp Status Views (WSV) is a community-driven growth platform that helps users increase WhatsApp Status views by expanding their contact network.
             </p>
-            <div className="grid grid-cols-2 gap-6 pt-4">
-              <div className="p-4 border-l-4 border-primary bg-primary/5">
-                <span className="block font-headline-md text-headline-md text-white">2M+</span>
-                <span className="text-on-surface-variant font-label-md">Active Users</span>
-              </div>
-              <div className="p-4 border-l-4 border-primary bg-primary/5">
-                <span className="block font-headline-md text-headline-md text-white">50k+</span>
-                <span className="text-on-surface-variant font-label-md">Daily Joins</span>
-              </div>
-              <div className="p-4 border-l-4 border-primary bg-primary/5">
-                <span className="block font-headline-md text-headline-md text-white">100k+</span>
-                <span className="text-on-surface-variant font-label-md">VCF Downloads</span>
-              </div>
-              <div className="p-4 border-l-4 border-primary bg-primary/5">
-                <span className="block font-headline-md text-headline-md text-white">99.9%</span>
-                <span className="text-on-surface-variant font-label-md">Success Rate</span>
-              </div>
+            <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              The platform works by connecting active users through downloadable VCF contact files, allowing participants to grow their contact lists and improve the visibility of their WhatsApp Status posts.
+            </p>
+            <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              Unlike expensive advertising campaigns, WSV focuses on audience growth through network expansion, helping your content reach real people who actively use WhatsApp.
+            </p>
+            <h3 className="font-headline-md text-headline-md text-white pt-2">Why Users Join WSV</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {[
+                "Increase WhatsApp Status views organically",
+                "Grow your WhatsApp audience faster",
+                "Reach more potential customers",
+                "Expand your business visibility",
+                "Improve engagement on WhatsApp",
+                "Build a larger contact network",
+                "Promote products and services effectively",
+                "Increase brand awareness"
+              ].map((benefit, i) => (
+                <div key={i} className="flex items-center gap-2 text-on-surface-variant">
+                  <span className="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+                  <span className="font-body-md text-body-md">{benefit}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -393,16 +422,24 @@ export const LandingPage = () => {
       {/* Step-by-Step Guide */}
       <section className="bg-surface-container-low py-stack-lg">
         <div className="max-w-container-max mx-auto px-margin-mobile sm:px-margin-desktop text-center mb-16">
-          <h2 className="font-headline-lg text-headline-lg mb-4 text-white">Simple 5-Step Growth Engine</h2>
-          <p className="text-on-surface-variant max-w-2xl mx-auto font-body-md">Our high-velocity protocol makes organic growth predictable and automated.</p>
+          <h2 className="font-headline-lg text-headline-lg mb-4 text-white">How To Increase WhatsApp Status Views</h2>
+          <p className="text-on-surface-variant max-w-2xl mx-auto font-body-md mb-2">
+            Many people struggle to get consistent views on WhatsApp because visibility depends largely on contact relationships.
+          </p>
+          <p className="text-on-surface-variant max-w-2xl mx-auto font-body-md mb-4">
+            The more active contacts you have, the greater your potential reach.
+          </p>
+          <p className="text-on-surface-variant max-w-2xl mx-auto font-body-md">
+            Our simple process makes audience growth easier:
+          </p>
         </div>
         <div className="max-w-container-max mx-auto px-margin-mobile sm:px-margin-desktop grid grid-cols-1 md:grid-cols-5 gap-6">
           {[
-            { num: "01", title: "Submit", desc: "Enter your details and phone number." },
-            { num: "02", title: "Wait", desc: "Server syncs with the live user pool." },
-            { num: "03", title: "Download", desc: "Grab your unique VCF contact file." },
-            { num: "04", title: "Import", desc: "Add new contacts to your phone list." },
-            { num: "05", title: "Scale", desc: "Watch your views skyrocket instantly." }
+            { num: "01", title: "Submit Your Details", desc: "Provide your basic information and WhatsApp phone number." },
+            { num: "02", title: "Join The Network", desc: "Your profile enters the active synchronization queue." },
+            { num: "03", title: "Download Your VCF File", desc: "Receive access to contact files generated from active network participants." },
+            { num: "04", title: "Import Contacts", desc: "Add contacts to your device quickly and easily." },
+            { num: "05", title: "Grow Your Views", desc: "As your network expands, your WhatsApp Status gains more exposure and visibility." }
           ].map((step, idx) => (
             <div key={idx} className="glass-card p-8 rounded-3xl text-center hover:bg-surface-container-high transition-all group">
               <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-primary transition-colors">
@@ -412,6 +449,62 @@ export const LandingPage = () => {
               <p className="font-label-md text-label-md text-on-surface-variant">{step.desc}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Target Audience & Views Importance */}
+      <section className="py-stack-lg border-t border-white/5">
+        <div className="max-w-container-max mx-auto px-margin-mobile sm:px-margin-desktop grid md:grid-cols-2 gap-16">
+          <div className="space-y-6">
+            <h2 className="font-headline-lg text-headline-lg text-white">Who Can Benefit From WSV?</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {[
+                { title: "Business Owners", desc: "Promote products, services, offers, discounts, and announcements to a larger audience." },
+                { title: "Affiliate Marketers", desc: "Get more eyes on your links, promotions, and marketing campaigns." },
+                { title: "Content Creators", desc: "Increase content visibility and build a stronger community around your brand." },
+                { title: "Online Vendors", desc: "Showcase products daily to a growing audience of WhatsApp users." },
+                { title: "Freelancers", desc: "Reach potential clients and generate more business opportunities." },
+                { title: "Influencers", desc: "Expand your influence and connect with more people in your niche." }
+              ].map((role, i) => (
+                <div key={i} className="p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/20 transition-all text-left">
+                  <h4 className="font-bold text-white font-headline text-sm mb-1">{role.title}</h4>
+                  <p className="text-on-surface-variant text-xs">{role.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div className="space-y-6">
+            <h2 className="font-headline-lg text-headline-lg text-white">Why More WhatsApp Status Views Matter</h2>
+            <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              WhatsApp has become one of the most powerful communication platforms in Africa.
+            </p>
+            <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              Every day, millions of users check Status updates from friends, family members, businesses, and brands.
+            </p>
+            <p className="font-body-md text-body-md text-on-surface-variant font-semibold">
+              More views can help you:
+            </p>
+            <div className="space-y-4 pt-2">
+              {[
+                "Generate more leads",
+                "Increase product awareness",
+                "Build trust with potential customers",
+                "Drive more inquiries",
+                "Improve conversion opportunities",
+                "Expand your digital presence",
+                "Grow your personal or business brand"
+              ].map((point, i) => (
+                <div key={i} className="flex items-center gap-3 text-on-surface-variant">
+                  <span className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center text-primary text-xs shrink-0 font-bold font-headline">✓</span>
+                  <span className="font-body-md text-body-md text-left">{point}</span>
+                </div>
+              ))}
+            </div>
+            <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed pt-2">
+              When more people see your content, you create more opportunities for engagement and growth.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -607,6 +700,31 @@ export const LandingPage = () => {
         </div>
       </section>
 
+      {/* Features Section */}
+      <section className="bg-surface-container-low py-stack-lg border-y border-white/5">
+        <div className="max-w-container-max mx-auto px-margin-mobile sm:px-margin-desktop text-center mb-16">
+          <h2 className="font-headline-lg text-headline-lg mb-4 text-white">Features Designed For Growth</h2>
+        </div>
+        <div className="max-w-container-max mx-auto px-margin-mobile sm:px-margin-desktop grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[
+            { title: "Verified Contact Network", desc: "Access a growing ecosystem of active WhatsApp users.", icon: "verified" },
+            { title: "Daily Network Expansion", desc: "New users join every day, creating fresh growth opportunities.", icon: "group_add" },
+            { title: "Fast Synchronization", desc: "Get connected to the network quickly and efficiently.", icon: "bolt" },
+            { title: "Multiple Growth Plans", desc: "Choose the package that fits your goals and audience size.", icon: "layers" },
+            { title: "User-Friendly Process", desc: "No complicated setup. No technical skills required.", icon: "touch_app" },
+            { title: "Community-Powered Reach", desc: "Leverage the power of a growing network of active WhatsApp users.", icon: "share" }
+          ].map((feature, idx) => (
+            <div key={idx} className="glass-card p-8 rounded-3xl hover:bg-surface-container-high transition-all group border border-white/5 text-left">
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
+                <span className="material-symbols-outlined text-primary group-hover:text-black transition-colors">{feature.icon}</span>
+              </div>
+              <h3 className="font-headline-md text-headline-md mb-2 text-white">{feature.title}</h3>
+              <p className="font-label-md text-label-md text-on-surface-variant">{feature.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Pricing Table */}
       <section className="py-stack-lg max-w-container-max mx-auto px-margin-mobile sm:px-margin-desktop" id="pricing">
         <div className="text-center mb-16">
@@ -719,9 +837,36 @@ export const LandingPage = () => {
         </div>
       </section>
 
+      {/* Final Slogan / CTA Banner */}
+      <section className="py-stack-lg max-w-container-max mx-auto px-margin-mobile sm:px-margin-desktop">
+        <div className="glass-card p-8 sm:p-12 md:p-16 rounded-[40px] border border-primary/20 ambient-glow relative overflow-hidden text-left">
+          <div className="absolute top-0 right-0 w-64 sm:w-96 h-64 sm:h-96 bg-primary/5 rounded-full blur-[80px] pointer-events-none" />
+          <div className="relative z-10 max-w-3xl space-y-6">
+            <h2 className="font-display-lg text-display-lg text-white">Join Thousands Growing Their WhatsApp Reach</h2>
+            <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              If you're looking for a smarter way to increase WhatsApp Status views, grow your audience, and reach more people daily, WSV provides a simple solution built around network growth and visibility.
+            </p>
+            <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              Start expanding your WhatsApp reach today and discover how a larger audience can create more opportunities for your business, content, and personal brand.
+            </p>
+            <div className="font-headline-md text-headline-md text-primary font-bold pt-2">
+              Increase WhatsApp Status Views. Grow Your Audience. Expand Your Influence.
+            </div>
+            <div className="pt-4">
+              <button 
+                onClick={() => handleScrollToSection("#join")}
+                className="bg-primary text-black px-8 py-4 rounded-xl font-bold uppercase tracking-widest text-xs hover:scale-105 transition-all shadow-lg shadow-primary/20 cursor-pointer"
+              >
+                Get started today.
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* FAQ Accordion */}
       <section className="py-stack-lg max-w-3xl mx-auto px-margin-mobile sm:px-margin-desktop" id="faq">
-        <h2 className="font-headline-lg text-headline-lg text-center mb-12 text-white">Common Questions</h2>
+        <h2 className="font-headline-lg text-headline-lg text-center mb-12 text-white">Frequently Asked Questions</h2>
         <div className="space-y-4">
           {faqs.map((faq, index) => (
             <div key={index} className="glass-card rounded-2xl overflow-hidden">
