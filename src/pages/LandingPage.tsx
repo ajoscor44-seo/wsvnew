@@ -73,7 +73,7 @@ export const LandingPage = () => {
       }
     };
     fetchStatus();
-    document.title = "WSV | #1 WhatsApp Growth Terminal";
+    document.title = "Increase WhatsApp Status Views Fast | WSV Nigeria";
   }, []);
 
   const handleSelectPlan = (plan: string) => {
@@ -261,22 +261,13 @@ export const LandingPage = () => {
               <span className="material-symbols-outlined text-[18px]">verified</span>
               Nigeria's Leading WhatsApp Growth Network
             </div>
-            <h1 className="font-display-lg text-display-lg md:text-[54px] tracking-tight leading-[1.1] text-white">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display-lg tracking-tight leading-[1.1] text-white">
               Increase WhatsApp Status Views <span className="text-primary">Fast</span> – Nigeria's Leading WhatsApp Growth Network
             </h1>
             <div className="space-y-4 text-on-surface-variant max-w-xl">
-              <h2 className="text-xl font-bold text-white font-headline">Grow Your WhatsApp Status Reach Organically</h2>
-              <p className="font-body-md text-body-md">
-                Want to increase your WhatsApp Status views and reach more people every day?
-              </p>
-              <p className="font-body-md text-body-md">
-                Our WhatsApp Status Views Network helps creators, business owners, vendors, affiliate marketers, influencers, and digital entrepreneurs grow their audience through a powerful contact synchronization system designed to expand visibility and increase engagement.
-              </p>
-              <p className="font-body-md text-body-md">
-                Whether you're promoting products, services, content, events, or personal brands, having more active contacts means more people can see your WhatsApp Status updates.
-              </p>
-              <p className="font-body-md text-body-md">
-                Join thousands of users who are growing their reach daily through our WhatsApp contact exchange ecosystem.
+              <h2 className="text-xl sm:text-2xl font-bold text-white font-headline">Grow Your WhatsApp Status Reach Organically</h2>
+              <p className="font-body-md text-body-md leading-relaxed">
+                Join Nigeria's leading community-driven WhatsApp growth network. WSV helps creators, online vendors, affiliate marketers, and business owners expand their reach, gain active contact views, and boost status engagement fast.
               </p>
               <p className="font-body-md text-body-md font-bold text-primary mt-2">
                 More Contacts. More Reach. More Views. More Opportunities.
@@ -387,15 +378,9 @@ export const LandingPage = () => {
             </div>
           </div>
           <div className="space-y-6">
-            <h2 className="font-headline-lg text-headline-lg text-white">What Is WhatsApp Status Views (WSV)?</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-headline-lg text-white">What Is WhatsApp Status Views (WSV)?</h2>
             <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
-              WhatsApp Status Views (WSV) is a community-driven growth platform that helps users increase WhatsApp Status views by expanding their contact network.
-            </p>
-            <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
-              The platform works by connecting active users through downloadable VCF contact files, allowing participants to grow their contact lists and improve the visibility of their WhatsApp Status posts.
-            </p>
-            <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
-              Unlike expensive advertising campaigns, WSV focuses on audience growth through network expansion, helping your content reach real people who actively use WhatsApp.
+              WSV is a community-powered platform that expands your contact list using downloadable VCF files. Connect with active WhatsApp users to increase status views organically without expensive ad campaigns.
             </p>
             <h3 className="font-headline-md text-headline-md text-white pt-2">Why Users Join WSV</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -421,16 +406,10 @@ export const LandingPage = () => {
 
       {/* Step-by-Step Guide */}
       <section className="bg-surface-container-low py-stack-lg">
-        <div className="max-w-container-max mx-auto px-margin-mobile sm:px-margin-desktop text-center mb-16">
-          <h2 className="font-headline-lg text-headline-lg mb-4 text-white">How To Increase WhatsApp Status Views</h2>
-          <p className="text-on-surface-variant max-w-2xl mx-auto font-body-md mb-2">
-            Many people struggle to get consistent views on WhatsApp because visibility depends largely on contact relationships.
-          </p>
-          <p className="text-on-surface-variant max-w-2xl mx-auto font-body-md mb-4">
-            The more active contacts you have, the greater your potential reach.
-          </p>
-          <p className="text-on-surface-variant max-w-2xl mx-auto font-body-md">
-            Our simple process makes audience growth easier:
+        <div className="max-w-container-max mx-auto px-margin-mobile sm:px-margin-desktop text-center mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-headline-lg mb-4 text-white">How To Increase WhatsApp Status Views</h2>
+          <p className="text-on-surface-variant max-w-2xl mx-auto font-body-md leading-relaxed">
+            Boost visibility through contact relationships. The more active contacts you have, the greater your status reach. Start growing with our simple 5-step process:
           </p>
         </div>
         <div className="max-w-container-max mx-auto px-margin-mobile sm:px-margin-desktop grid grid-cols-1 md:grid-cols-5 gap-6">
@@ -456,7 +435,7 @@ export const LandingPage = () => {
       <section className="py-stack-lg border-t border-white/5">
         <div className="max-w-container-max mx-auto px-margin-mobile sm:px-margin-desktop grid md:grid-cols-2 gap-16">
           <div className="space-y-6">
-            <h2 className="font-headline-lg text-headline-lg text-white">Who Can Benefit From WSV?</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-headline-lg text-white">Who Can Benefit From WSV?</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[
                 { title: "Business Owners", desc: "Promote products, services, offers, discounts, and announcements to a larger audience." },
@@ -475,12 +454,9 @@ export const LandingPage = () => {
           </div>
           
           <div className="space-y-6">
-            <h2 className="font-headline-lg text-headline-lg text-white">Why More WhatsApp Status Views Matter</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-headline-lg text-white">Why More WhatsApp Status Views Matter</h2>
             <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
-              WhatsApp has become one of the most powerful communication platforms in Africa.
-            </p>
-            <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
-              Every day, millions of users check Status updates from friends, family members, businesses, and brands.
+              WhatsApp is one of the most powerful platforms in Africa. Expanding your views helps you generate leads, build trust, and drive inquiries organically.
             </p>
             <p className="font-body-md text-body-md text-on-surface-variant font-semibold">
               More views can help you:
@@ -512,7 +488,7 @@ export const LandingPage = () => {
       <section className="py-stack-lg" id="join">
         <div className="max-w-container-max mx-auto px-margin-mobile sm:px-margin-desktop grid md:grid-cols-2 gap-16 items-start">
           <div className="sticky top-24">
-            <h2 className="font-headline-lg text-headline-lg mb-6 text-white">Initiate Your Growth Sequence</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-headline-lg mb-6 text-white">Initiate Your Growth Sequence</h2>
             <p className="font-body-lg text-body-lg text-on-surface-variant mb-8">Join the queue for the next VCF drop. Ensure your phone number is correct to maintain synchronization integrity.</p>
             <div className="bg-primary/10 border border-primary/20 p-6 rounded-2xl flex items-center justify-between">
               <div>
@@ -637,8 +613,8 @@ export const LandingPage = () => {
 
       {/* Testimonials */}
       <section className="bg-surface-container-lowest py-stack-lg">
-        <div className="max-w-container-max mx-auto px-margin-mobile sm:px-margin-desktop mb-16 text-center">
-          <h2 className="font-headline-lg text-headline-lg mb-4 text-white">Trusted by 50,000+ Creators</h2>
+        <div className="max-w-container-max mx-auto px-margin-mobile sm:px-margin-desktop mb-12 text-center">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-headline-lg mb-4 text-white">Trusted by 50,000+ Creators</h2>
           <div className="flex justify-center gap-1">
             <span className="material-symbols-outlined text-tertiary">star</span>
             <span className="material-symbols-outlined text-tertiary">star</span>
@@ -702,8 +678,8 @@ export const LandingPage = () => {
 
       {/* Features Section */}
       <section className="bg-surface-container-low py-stack-lg border-y border-white/5">
-        <div className="max-w-container-max mx-auto px-margin-mobile sm:px-margin-desktop text-center mb-16">
-          <h2 className="font-headline-lg text-headline-lg mb-4 text-white">Features Designed For Growth</h2>
+        <div className="max-w-container-max mx-auto px-margin-mobile sm:px-margin-desktop text-center mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-headline-lg mb-4 text-white">Features Designed For Growth</h2>
         </div>
         <div className="max-w-container-max mx-auto px-margin-mobile sm:px-margin-desktop grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
@@ -727,8 +703,8 @@ export const LandingPage = () => {
 
       {/* Pricing Table */}
       <section className="py-stack-lg max-w-container-max mx-auto px-margin-mobile sm:px-margin-desktop" id="pricing">
-        <div className="text-center mb-16">
-          <h2 className="font-headline-lg text-headline-lg mb-4 text-white">Precision Sync Plans</h2>
+        <div className="text-center mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-headline-lg mb-4 text-white">Precision Sync Plans</h2>
           <p className="text-on-surface-variant font-body-md">Choose your velocity. Scale your influence.</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -842,12 +818,9 @@ export const LandingPage = () => {
         <div className="glass-card p-8 sm:p-12 md:p-16 rounded-[40px] border border-primary/20 ambient-glow relative overflow-hidden text-left">
           <div className="absolute top-0 right-0 w-64 sm:w-96 h-64 sm:h-96 bg-primary/5 rounded-full blur-[80px] pointer-events-none" />
           <div className="relative z-10 max-w-3xl space-y-6">
-            <h2 className="font-display-lg text-display-lg text-white">Join Thousands Growing Their WhatsApp Reach</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-display-lg text-white">Join Thousands Growing Their WhatsApp Reach</h2>
             <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
-              If you're looking for a smarter way to increase WhatsApp Status views, grow your audience, and reach more people daily, WSV provides a simple solution built around network growth and visibility.
-            </p>
-            <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
-              Start expanding your WhatsApp reach today and discover how a larger audience can create more opportunities for your business, content, and personal brand.
+              Expand your reach, grow your audience, and get more status views daily. Join thousands of creators and vendors using our smart network synchronization to build visibility.
             </p>
             <div className="font-headline-md text-headline-md text-primary font-bold pt-2">
               Increase WhatsApp Status Views. Grow Your Audience. Expand Your Influence.
@@ -866,7 +839,7 @@ export const LandingPage = () => {
 
       {/* FAQ Accordion */}
       <section className="py-stack-lg max-w-3xl mx-auto px-margin-mobile sm:px-margin-desktop" id="faq">
-        <h2 className="font-headline-lg text-headline-lg text-center mb-12 text-white">Frequently Asked Questions</h2>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-headline-lg text-center mb-12 text-white">Frequently Asked Questions</h2>
         <div className="space-y-4">
           {faqs.map((faq, index) => (
             <div key={index} className="glass-card rounded-2xl overflow-hidden">
