@@ -19,9 +19,14 @@ export const Footer = () => {
     <footer className="bg-surface-container-lowest dark:bg-surface-container-lowest w-full border-t border-white/5">
       <div className="flex flex-col md:flex-row justify-between items-start gap-8 px-margin-mobile sm:px-margin-desktop py-stack-lg max-w-container-max mx-auto">
         <div className="space-y-6 max-w-sm">
-          <Link to="/" className="font-headline-md text-headline-md font-bold text-primary dark:text-primary">
-            WSV
-          </Link>
+          <div className="flex flex-col items-start leading-none">
+            <Link to="/" className="font-headline-md text-headline-md font-bold text-primary dark:text-primary leading-none">
+              WSV
+            </Link>
+            <span className="text-[10px] font-bold text-on-surface-variant/70 tracking-widest mt-1">
+              v3.0
+            </span>
+          </div>
           <p className="font-body-md text-body-md text-on-surface-variant">
             WSV is a third-party service provider. We are NOT affiliated with WhatsApp LLC or Meta Platforms, Inc. WSV provides network growth tools for independent creators and businesses.
           </p>

@@ -60,9 +60,14 @@ export const Navbar = () => {
   return (
     <header className={`bg-surface/80 backdrop-blur-xl w-full top-0 sticky z-50 border-b border-white/10 shadow-sm transition-all duration-300 ${isScrolled ? "py-3" : "py-4"}`}>
       <div className="flex justify-between items-center w-full px-margin-mobile sm:px-margin-desktop py-1 max-w-container-max mx-auto">
-        <Link to="/" className="font-headline-md text-headline-md font-bold text-primary dark:text-primary">
-          WSV
-        </Link>
+        <div className="flex flex-col items-start leading-none">
+          <Link to="/" className="font-headline-md text-headline-md font-bold text-primary dark:text-primary leading-none">
+            WSV
+          </Link>
+          <span className="text-[10px] font-bold text-on-surface-variant/70 tracking-widest mt-1">
+            v3.0
+          </span>
+        </div>
         
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8">
