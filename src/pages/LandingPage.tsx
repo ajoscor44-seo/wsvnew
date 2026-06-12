@@ -924,11 +924,14 @@ export const LandingPage = () => {
       {/* Floating Premium Banner */}
       <div className="fixed bottom-0 w-full z-40 bg-surface/90 border-t border-white/10 backdrop-blur-xl py-3.5 sm:py-4 px-4 sm:px-6 shadow-[0_-4px_20px_rgba(0,0,0,0.15)]">
         <div className="max-w-container-max mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
-          <p className="font-bold text-xs sm:text-sm text-center sm:text-left text-on-surface">
+          <p 
+            onClick={() => navigate("/premium")}
+            className="font-bold text-xs sm:text-sm text-center sm:text-left text-on-surface cursor-pointer hover:text-primary transition-colors"
+          >
             Would You Like To Increase Your Views Even Further? Get 1k Views for as low as N1000
           </p>
           <button
-            onClick={() => handleSelectPlan("Better")}
+            onClick={() => navigate("/premium")}
             className="btn-secondary w-full sm:w-auto py-2.5 sm:py-3 px-6 sm:px-8 text-[10px] sm:text-xs rounded-full shadow-lg cursor-pointer"
           >
             TAP HERE / GO PREMIUM
