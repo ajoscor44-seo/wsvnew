@@ -217,8 +217,12 @@ export const PremiumPage = () => {
 
               localStorage.setItem("zar_user", JSON.stringify(fullUserData));
               setShowPayModal(false);
-              toast.success("Successfully upgraded to Premium!");
-              navigate("/download-vcf");
+              toast.success("Successfully upgraded to Premium! Redirecting to WhatsApp...");
+              
+              const encodedText = encodeURIComponent(
+                `Hello WSV Support,\n\nI have successfully paid and subscribed to the *${targetPlan.name}* plan.\n\nName: ${formData.name}\nPhone: ${finalPhone}\nPayment Ref: ${paymentRef}\n\nPlease verify my payment and add me to the VIP sync list.`
+              );
+              window.location.href = `https://wa.me/2348103460237?text=${encodedText}`;
             } else {
               toast.error(resData.error || "Upgrade failed, please contact support");
             }

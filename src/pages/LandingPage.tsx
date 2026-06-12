@@ -146,8 +146,17 @@ export const LandingPage = () => {
 
           localStorage.setItem("zar_user", JSON.stringify(fullUserData));
           setSubmissionData(fullUserData);
-          setShowSuccessModal(true);
-          toast.success(formData.plan === "Free" ? "Successfully joined!" : "Upgrade successful!");
+          
+          if (formData.plan !== "Free") {
+            toast.success("Upgrade successful! Redirecting to WhatsApp...");
+            const encodedText = encodeURIComponent(
+              `Hello WSV Support,\n\nI have successfully paid and subscribed to the *${formData.plan}* plan.\n\nName: ${formData.name}\nPhone: ${finalPhone}\nPayment Ref: ${paymentRef}\n\nPlease verify my payment and add me to the VIP sync list.`
+            );
+            window.location.href = `https://wa.me/2348103460237?text=${encodedText}`;
+          } else {
+            setShowSuccessModal(true);
+            toast.success("Successfully joined!");
+          }
         } else {
           toast.error(data.error || "Something went wrong");
         }
