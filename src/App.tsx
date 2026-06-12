@@ -23,6 +23,8 @@ import { StaticPage } from "./pages/StaticPage";
 import { AuthorProfilePage } from "./pages/AuthorProfilePage";
 import { KnowledgeBasePage } from "./pages/KnowledgeBasePage";
 import { PremiumPage } from "./pages/PremiumPage";
+import { CsvVcfPage } from "./pages/CsvVcfPage";
+import { VcfCsvPage } from "./pages/VcfCsvPage";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -51,6 +53,8 @@ const AppContent = () => {
         <Route path="/author" element={<AuthorProfilePage />} />
         <Route path="/knowledge-base" element={<KnowledgeBasePage />} />
         <Route path="/premium" element={<PremiumPage />} />
+        <Route path="/csv-vcf" element={<CsvVcfPage />} />
+        <Route path="/vcf-csv" element={<VcfCsvPage />} />
         <Route path="/:slug" element={<BlogPostPage />} />
       </Routes>
       <Footer />

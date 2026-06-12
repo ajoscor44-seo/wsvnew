@@ -63,6 +63,12 @@ export const Footer = () => {
               <Link to="/whatsapp-tvs" className="text-on-surface-variant/80 font-body-md hover:text-primary transition-colors active:underline text-sm font-semibold">
                 TV Directory
               </Link>
+              <Link to="/csv-vcf" className="text-on-surface-variant/80 font-body-md hover:text-primary transition-colors active:underline text-sm font-semibold">
+                CSV to VCF
+              </Link>
+              <Link to="/vcf-csv" className="text-on-surface-variant/80 font-body-md hover:text-primary transition-colors active:underline text-sm font-semibold">
+                VCF to CSV
+              </Link>
               <Link to="/blog" className="text-on-surface-variant/80 font-body-md hover:text-primary transition-colors active:underline text-sm font-semibold">
                 Growth Tips
               </Link>

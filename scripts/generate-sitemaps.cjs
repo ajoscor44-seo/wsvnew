@@ -71,6 +71,18 @@ function generate() {
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://wsv.com.ng/csv-vcf</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://wsv.com.ng/vcf-csv</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://wsv.com.ng/knowledge-base</loc>
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
