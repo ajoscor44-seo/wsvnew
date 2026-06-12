@@ -57,7 +57,7 @@ export const BlogPostPage = () => {
 
   return (
     <div className="min-h-screen bg-surface selection:bg-secondary/30 selection:text-primary">
-      <main className="pt-24 sm:pt-32 pb-16 sm:pb-24">
+      <main className="pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16">
         <article className="max-w-4xl mx-auto px-margin-mobile sm:px-margin-desktop">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
             <Breadcrumbs items={[
@@ -91,7 +91,7 @@ export const BlogPostPage = () => {
             </div>
 
             <h1 
-              className="text-2xl sm:text-4xl md:text-6xl font-display-lg text-white leading-tight tracking-tighter"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display-lg text-white leading-tight tracking-tighter"
               dangerouslySetInnerHTML={{ __html: post.title.rendered }}
             />
 
@@ -130,7 +130,7 @@ export const BlogPostPage = () => {
           />
 
           {/* Post Footer / CTA */}
-          <footer className="mt-12 sm:mt-20 pt-10 sm:pt-16 border-t border-primary/5">
+          <footer className="mt-8 sm:mt-12 pt-8 sm:pt-10 border-t border-primary/5">
             <div className="glass-card p-6 sm:p-12 md:p-16 rounded-2xl sm:rounded-[2.5rem] text-white border border-primary/20 ambient-glow relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 sm:w-96 h-64 sm:h-96 bg-secondary/10 rounded-full blur-[80px] sm:blur-[100px] -mr-32 sm:-mr-48 -mt-32 sm:-mt-48 pointer-events-none" />
               <div className="relative z-10 space-y-6 sm:space-y-8 max-w-2xl">

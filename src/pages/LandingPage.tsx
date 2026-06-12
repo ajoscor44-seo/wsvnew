@@ -77,10 +77,14 @@ export const LandingPage = () => {
   }, []);
 
   const handleSelectPlan = (plan: string) => {
-    setFormData((prev) => ({ ...prev, plan }));
-    const joinSection = document.getElementById("join");
-    if (joinSection) {
-      joinSection.scrollIntoView({ behavior: "smooth" });
+    if (plan === "Free") {
+      setFormData((prev) => ({ ...prev, plan }));
+      const joinSection = document.getElementById("join");
+      if (joinSection) {
+        joinSection.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      window.location.href = `/premium?plan=${plan}`;
     }
   };
 
@@ -275,7 +279,7 @@ export const LandingPage = () => {
             </div>
             <div className="flex flex-col sm:flex-row gap-4 pt-4 w-full">
               <Link
-                to="/download"
+                to="/download-vcf"
                 className="bg-gradient-to-b from-primary to-secondary-container text-on-primary-fixed px-8 py-4 rounded-xl font-headline-md text-[18px] font-bold shadow-lg hover:shadow-primary/20 transition-all text-center w-full sm:w-auto"
               >
                 Download VCF
@@ -284,7 +288,7 @@ export const LandingPage = () => {
                 onClick={() => handleScrollToSection("#join")}
                 className="bg-surface-container-high border border-white/10 text-on-surface px-8 py-4 rounded-xl font-headline-md text-[18px] font-bold hover:bg-surface-container-highest transition-all cursor-pointer w-full sm:w-auto"
               >
-                Join Network
+                Submit Your Contact
               </button>
             </div>
           </div>
@@ -484,12 +488,69 @@ export const LandingPage = () => {
         </div>
       </section>
 
+      {/* Free vs Premium Comparison Section */}
+      <section className="py-12 border-t border-white/5 max-w-container-max mx-auto px-margin-mobile sm:px-margin-desktop">
+        <div className="text-center mb-10">
+          <span className="text-primary font-bold uppercase tracking-[0.2em] text-[10px] sm:text-xs">Ecosystem Comparison</span>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-headline-lg text-white mt-2">Free vs Premium Sync</h2>
+        </div>
+
+        <div className="glass-card rounded-3xl border border-white/5 overflow-hidden shadow-2xl">
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse text-left text-sm sm:text-base">
+              <thead>
+                <tr className="bg-surface-container-high border-b border-white/10 text-white font-bold font-headline uppercase text-[10px] tracking-wider">
+                  <th className="p-4 sm:p-6">Feature</th>
+                  <th className="p-4 sm:p-6 text-on-surface-variant">Free Plan</th>
+                  <th className="p-4 sm:p-6 text-primary">Premium Plans</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5 text-on-surface-variant font-semibold">
+                <tr>
+                  <td className="p-4 sm:p-6 text-white font-headline text-sm sm:text-base">Sync Priority</td>
+                  <td className="p-4 sm:p-6 text-xs sm:text-sm">Standard sync queue</td>
+                  <td className="p-4 sm:p-6 text-xs sm:text-sm text-primary flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                    Priority Sync & Fast Track
+                  </td>
+                </tr>
+                <tr>
+                  <td className="p-4 sm:p-6 text-white font-headline text-sm sm:text-base">Contact Volume</td>
+                  <td className="p-4 sm:p-6 text-xs sm:text-sm">Basic pool (~100 contacts)</td>
+                  <td className="p-4 sm:p-6 text-xs sm:text-sm text-white">Up to 15,000 verified contacts</td>
+                </tr>
+                <tr>
+                  <td className="p-4 sm:p-6 text-white font-headline text-sm sm:text-base">Custom Labeling</td>
+                  <td className="p-4 sm:p-6 text-xs sm:text-sm">Standard contact format</td>
+                  <td className="p-4 sm:p-6 text-xs sm:text-sm text-white">Custom names to stand out</td>
+                </tr>
+                <tr>
+                  <td className="p-4 sm:p-6 text-white font-headline text-sm sm:text-base">Community Network</td>
+                  <td className="p-4 sm:p-6 text-xs sm:text-sm">No group access</td>
+                  <td className="p-4 sm:p-6 text-xs sm:text-sm text-white">Official WSV WhatsApp Group</td>
+                </tr>
+                <tr>
+                  <td className="p-4 sm:p-6 text-white font-headline text-sm sm:text-base">Sync Schedule</td>
+                  <td className="p-4 sm:p-6 text-xs sm:text-sm">Manual nightly download</td>
+                  <td className="p-4 sm:p-6 text-xs sm:text-sm text-white">Automated priority drops</td>
+                </tr>
+                <tr>
+                  <td className="p-4 sm:p-6 text-white font-headline text-sm sm:text-base">Support Priority</td>
+                  <td className="p-4 sm:p-6 text-xs sm:text-sm">Standard self-service</td>
+                  <td className="p-4 sm:p-6 text-xs sm:text-sm text-white">24/7 VIP Admin Support</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
       {/* Contact Submission Form */}
       <section className="py-stack-lg" id="join">
         <div className="max-w-container-max mx-auto px-margin-mobile sm:px-margin-desktop grid md:grid-cols-2 gap-16 items-start">
           <div className="sticky top-24">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-headline-lg mb-6 text-white">Initiate Your Growth Sequence</h2>
-            <p className="font-body-lg text-body-lg text-on-surface-variant mb-8">Join the queue for the next VCF drop. Ensure your phone number is correct to maintain synchronization integrity.</p>
+            <p className="font-body-lg text-body-lg text-on-surface-variant mb-8">Join the queue for the next VCF download. Ensure your phone number is correct to maintain synchronization integrity.</p>
             <div className="bg-primary/10 border border-primary/20 p-6 rounded-2xl flex items-center justify-between">
               <div>
                 <span className="block text-primary font-stats-number text-stats-number">
@@ -961,7 +1022,7 @@ export const LandingPage = () => {
                     </button>
                   ) : (
                     <Link
-                      to="/download"
+                      to="/download-vcf"
                       className="w-full bg-primary text-black py-4 sm:py-5 rounded-xl sm:rounded-2xl font-bold flex items-center justify-center gap-3 shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform text-sm text-center"
                     >
                       <span className="material-symbols-outlined text-[18px]">download</span>

@@ -1,0 +1,32 @@
+# WhatsApp Status Views (WSV)
+
+WSV is a community-driven contact exchange terminal built to increase WhatsApp Status views and expand growth reach organically for independent creators, vendors, affiliate marketers, and business owners in Nigeria and other African countries.
+
+- **URL**: https://wsv.com.ng
+- **Base Stack**: React, TypeScript, Express, Vite, Supabase Postgres, TailwindCSS, Korapay Billing.
+
+## Main Routes & Pages
+
+All pages share a dark glassmorphic UI design built with harmonized Plus Jakarta Sans and Inter font families.
+
+- **Home (`/`)**: Main landing page with contact registration forms, countdown timer to the next daily drop, ecosystem statistics, benefit descriptions, pricing tables, and user reviews.
+- **Download Zone (`/download-vcf`)**: Daily VCF download zone. The file for the current calendar day is compiled and unlocked at exactly 9:30 PM WAT (Africa/Lagos timezone). Includes pro guides to merge duplicates.
+- **Help Base (`/knowledge-base`)**: Real-time searchable FAQ, troubleshooting guidelines (lag mitigation, duplicate merging, VCF import tutorials), and support references.
+- **TV Directory (`/whatsapp-tvs`)**: Directory of registered WhatsApp TVs. Filterable by category (Entertainment, Tech, Commerce, etc.) with active follower counts.
+- **Blog Section (`/blog`)**: Index page and individual articles (/slug) detailing organic WhatsApp audience growth tactics.
+
+## Dynamic Core Logic
+
+- **Timezone Syncing**: All file generation countdowns and scheduled drop locks calculate dynamically in `Africa/Lagos` time, regardless of host machine locales.
+- **Cron Generation Schedule**: A cron job runs every night at exactly 21:30 (9:30 PM) Lagos time. It groups all submissions made on that day and writes them to a `contacts-YYYY-MM-DD.vcf` card list in the public folder.
+- **Free vs Premium Synced Queues**: Free submissions offer basic synchronization. Upgrading to a premium tier (Good, Better, Best) moves numbers into priority queues with elevated visibility (5,000 to 10,000+ views).
+
+## Core API Reference
+
+- `POST /api/submit`: Register name and number into the queue.
+  - Body: `{ phoneNumber: string, name: string, plan: "Free"|"Good"|"Better"|"Best", paymentReference?: string, gender: "Male"|"Female", country: "NG"|"GH"|"ZA"|"KE" }`
+- `GET /api/status`: Fetch system synchronization status, database counts, and downloadable VCF filenames.
+  - Query: `?phoneNumber=string` (optional, checks user subscription details).
+- `POST /api/korapay/webhook`: Stripe-equivalent payment webhook endpoint. Processes premium user upgrades dynamically.
+- `POST /api/admin/seed`: Populates Supabase Postgres tables with sample user lists, drops, and mock releases.
+- `POST /api/admin/generate-vcf`: Manually trigger VCF compilation outside standard schedules.

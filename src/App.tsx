@@ -21,8 +21,8 @@ import { BlogPage } from "./pages/BlogPage";
 import { BlogPostPage } from "./pages/BlogPostPage";
 import { StaticPage } from "./pages/StaticPage";
 import { AuthorProfilePage } from "./pages/AuthorProfilePage";
-import { AuthPage } from "./pages/AuthPage";
-import { DashboardPage } from "./pages/DashboardPage";
+import { KnowledgeBasePage } from "./pages/KnowledgeBasePage";
+import { PremiumPage } from "./pages/PremiumPage";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -34,7 +34,7 @@ const ScrollToTop = () => {
 
 const AppContent = () => {
   const location = useLocation();
-  const isDownloadPage = location.pathname === "/download";
+  const isDownloadPage = location.pathname === "/download-vcf";
 
   return (
     <div className="min-h-screen bg-surface font-sans text-on-surface selection:bg-secondary/30 selection:text-primary">
@@ -43,14 +43,14 @@ const AppContent = () => {
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/download" element={<DownloadPage />} />
+        <Route path="/download-vcf" element={<DownloadPage />} />
         <Route path="/whatsapp-tvs" element={<WhatsappTvsPage />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/legal/:type" element={<LegalPage />} />
         <Route path="/p/:slug" element={<StaticPage />} />
         <Route path="/author" element={<AuthorProfilePage />} />
-        <Route path="/auth" element={<AuthPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/knowledge-base" element={<KnowledgeBasePage />} />
+        <Route path="/premium" element={<PremiumPage />} />
         <Route path="/:slug" element={<BlogPostPage />} />
       </Routes>
       <Footer />

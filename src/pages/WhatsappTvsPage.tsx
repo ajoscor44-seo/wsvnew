@@ -49,7 +49,7 @@ export const WhatsappTvsPage = () => {
   });
 
   return (
-    <div className="min-h-screen bg-surface pt-24 sm:pt-28 md:pt-32 pb-16 sm:pb-20 px-margin-mobile sm:px-margin-desktop relative overflow-hidden">
+    <div className="min-h-screen bg-surface pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 px-margin-mobile sm:px-margin-desktop relative overflow-hidden">
       {/* Dynamic Background */}
       <div className="absolute top-0 right-0 w-64 sm:w-96 h-64 sm:h-96 bg-primary/5 rounded-full blur-[80px] sm:blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-64 sm:w-96 h-64 sm:h-96 bg-secondary/5 rounded-full blur-[80px] sm:blur-[120px] pointer-events-none" />
@@ -57,7 +57,7 @@ export const WhatsappTvsPage = () => {
       <div className="max-w-7xl mx-auto relative z-10">
         <Breadcrumbs items={[{ label: "TV Directory" }]} />
         {/* Hero Section */}
-        <div className="text-center mb-12 sm:mb-20 md:mb-24">
+        <div className="text-center mb-8 sm:mb-12">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -66,7 +66,7 @@ export const WhatsappTvsPage = () => {
             <Tv size={12} />
             Nigeria's #1 TV Directory
           </motion.div>
-          <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-8xl font-display-lg text-white tracking-tighter leading-none mb-5 sm:mb-8 px-2">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display-lg text-white tracking-tighter leading-none mb-5 sm:mb-8 px-2">
             Discover The Best <br/> <span className="text-gradient">WhatsApp TVs In Nigeria</span>
           </h1>
           <p className="text-sm sm:text-base md:text-xl text-on-surface-variant max-w-3xl mx-auto font-medium leading-relaxed px-2">
@@ -207,10 +207,15 @@ export const WhatsappTvsPage = () => {
                 Reach over 2 million creators in Nigeria. Add your TV for only ₦1,000 and get featured at the top of our directory.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 pt-2 sm:pt-4">
-                <Link to="/auth?mode=signup" className="bg-accent text-black w-full sm:w-auto px-8 sm:px-12 py-4 sm:py-5 md:py-6 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base md:text-lg shadow-xl shadow-accent/30 hover:scale-105 transition-transform flex items-center justify-center gap-3 sm:gap-4">
+                <a 
+                  href="https://wa.me/2348103460237?text=Hello%20Admin%2C%20I%20want%20to%20get%20my%20WhatsApp%20TV%20verified%20and%20listed%20on%20WSV." 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className="bg-accent text-black w-full sm:w-auto px-8 sm:px-12 py-4 sm:py-5 md:py-6 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base md:text-lg shadow-xl shadow-accent/30 hover:scale-105 transition-transform flex items-center justify-center gap-3 sm:gap-4"
+                >
                   Feature My TV
                   <ArrowRight size={20} />
-                </Link>
+                </a>
               </div>
             </div>
             <div className="hidden lg:block">

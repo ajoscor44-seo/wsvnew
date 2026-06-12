@@ -46,11 +46,11 @@ export const BlogPage = () => {
 
   return (
     <div className="min-h-screen bg-surface selection:bg-secondary/30 selection:text-primary">
-      <main className="max-w-7xl mx-auto px-margin-mobile sm:px-margin-desktop py-24 sm:py-32 relative">
+      <main className="max-w-7xl mx-auto px-margin-mobile sm:px-margin-desktop pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 relative">
         <Breadcrumbs items={[{ label: "Growth Tips" }]} />
         
         {/* Hero Section */}
-        <div className="text-center mb-12 sm:mb-20 md:mb-24 relative">
+        <div className="text-center mb-8 sm:mb-12 relative">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 sm:w-96 h-64 sm:h-96 bg-primary/5 rounded-full blur-[80px] sm:blur-[100px] pointer-events-none" />
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -60,7 +60,7 @@ export const BlogPage = () => {
             <Sparkles size={12} className="text-accent" />
             The Growth Blueprint
           </motion.div>
-          <h1 className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-display-lg text-white tracking-tighter leading-none mb-6 sm:mb-8">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display-lg text-white tracking-tighter leading-none mb-6 sm:mb-8">
             Master Your <br/> <span className="text-gradient">WhatsApp Influence</span>
           </h1>
           <p className="text-sm sm:text-base md:text-xl text-on-surface-variant max-w-2xl mx-auto font-medium leading-relaxed">
@@ -69,7 +69,7 @@ export const BlogPage = () => {
         </div>
 
         {/* Search Hub */}
-        <div className="max-w-2xl mx-auto mb-12 sm:mb-20 relative px-2">
+        <div className="max-w-2xl mx-auto mb-8 sm:mb-12 relative px-2">
           <div className="absolute inset-0 bg-primary/5 blur-3xl -z-10 rounded-full" />
           <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-primary/30" size={18} />
           <input 
@@ -159,7 +159,7 @@ export const BlogPage = () => {
 
         {/* Pagination Hub */}
         {totalPages > 1 && (
-          <div className="mt-16 sm:mt-24 md:mt-32 flex flex-wrap justify-center items-center gap-2 sm:gap-3">
+          <div className="mt-10 sm:mt-16 flex flex-wrap justify-center items-center gap-2 sm:gap-3">
             <button
               onClick={() => paginate(Math.max(1, currentPage - 1))}
               disabled={currentPage === 1}

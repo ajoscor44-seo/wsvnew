@@ -34,12 +34,12 @@ export const StaticPage = () => {
 
   return (
     <div className="min-h-screen bg-surface selection:bg-secondary/30 selection:text-primary">
-      <main className="pt-24 sm:pt-32 pb-16 sm:pb-24">
+      <main className="pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16">
         <article className="max-w-4xl mx-auto px-4 sm:px-6">
           <Breadcrumbs items={[{ label: page.title.rendered.replace(/&nbsp;/g, ' ') }]} />
           <header className="mb-10 sm:mb-16 text-center">
             <h1 
-              className="text-3xl sm:text-5xl md:text-6xl font-display-lg text-white leading-[1.1] tracking-tighter"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display-lg text-white leading-[1.1] tracking-tighter"
               dangerouslySetInnerHTML={{ __html: page.title.rendered }}
             />
           </header>

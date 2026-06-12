@@ -119,7 +119,7 @@ export const DownloadPage = () => {
   return (
     <div className="min-h-screen bg-surface text-on-surface">
 
-      <main className="max-w-5xl mx-auto px-margin-mobile sm:px-margin-desktop py-24 sm:py-28 md:py-32 relative">
+      <main className="max-w-5xl mx-auto px-margin-mobile sm:px-margin-desktop pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 relative">
         <Breadcrumbs items={[{ label: "Download Zone" }]} />
         {/* Dynamic Background */}
         <div className="absolute top-0 right-0 w-64 sm:w-96 h-64 sm:h-96 bg-secondary/5 rounded-full blur-[80px] sm:blur-[100px] pointer-events-none" />
@@ -141,8 +141,8 @@ export const DownloadPage = () => {
             System Live: Daily Sync Terminal
           </motion.div>
           
-          <h1 className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-display-lg text-white tracking-tighter leading-[0.9] mb-8 sm:mb-12">
-            Secure Your <br/> <span className="text-gradient">Daily VCF Drop</span>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display-lg text-white tracking-tighter leading-[1.1] mb-8 sm:mb-12">
+            Secure Your <br/> <span className="text-gradient">Daily VCF Download</span>
           </h1>
           
           <div className="max-w-4xl mx-auto glass-card p-6 sm:p-8 md:p-12 card-radius-lg text-left relative overflow-hidden group">
@@ -154,7 +154,7 @@ export const DownloadPage = () => {
                   Terminal Schedule
                 </h3>
                 <p className="text-sm sm:text-base md:text-lg text-on-surface-variant font-medium leading-relaxed">
-                  Drops are compiled and released every night at <span className="text-primary font-bold px-2 sm:px-3 py-0.5 sm:py-1 bg-primary/5 rounded-lg text-xs sm:text-sm">21:30 WAT</span>. 
+                  Daily VCF Downloads are compiled and released every night at <span className="text-primary font-bold px-2 sm:px-3 py-0.5 sm:py-1 bg-primary/5 rounded-lg text-xs sm:text-sm">21:30 WAT</span>. 
                 </p>
                 <div className="flex items-center gap-2 text-[9px] sm:text-[10px] font-bold text-primary/30 uppercase tracking-widest">
                   <Globe size={12} /> Global Sync Protocols Active
@@ -187,7 +187,7 @@ export const DownloadPage = () => {
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-accent/10 border border-accent/20 p-5 sm:p-6 md:p-8 mb-10 sm:mb-16 relative rounded-2xl sm:rounded-[2rem] overflow-hidden group"
+            className="bg-accent/10 border border-accent/20 p-5 sm:p-6 md:p-8 mb-6 sm:mb-10 relative rounded-2xl sm:rounded-[2rem] overflow-hidden group"
           >
             <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity" />
             <button 
@@ -216,7 +216,7 @@ export const DownloadPage = () => {
           <div className="bg-surface-container-high p-5 sm:p-6 md:p-8 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 border-b border-white/5">
             <h2 className="font-bold uppercase tracking-[0.2em] text-[10px] sm:text-xs flex items-center gap-2 sm:gap-3">
               <Download size={16} className="text-primary" />
-              Available VCF Drops
+              Available VCF Downloads
             </h2>
             <div className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest bg-white/5 border border-white/10 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full">
               {filteredFiles.length} Releases Found
