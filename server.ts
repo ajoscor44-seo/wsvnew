@@ -68,7 +68,7 @@ app.post("/api/submit", async (req, res) => {
     else if (plan === "Best") premiumDays = 90;
 
     try {
-      const verifyRes = await fetch(`https://api.korapay.com/v1/charges/verify/${paymentReference}`, {
+      const verifyRes = await fetch(`https://api.korapay.com/merchant/api/v1/charges/${paymentReference}`, {
         headers: {
           "Authorization": `Bearer ${process.env.KORAPAY_SECRET_KEY}`
         }
@@ -307,7 +307,7 @@ app.post("/api/tvs/submit", async (req, res) => {
   try {
     // Verify payment reference with Korapay
     try {
-      const verifyRes = await fetch(`https://api.korapay.com/v1/charges/verify/${paymentReference}`, {
+      const verifyRes = await fetch(`https://api.korapay.com/merchant/api/v1/charges/${paymentReference}`, {
         headers: {
           "Authorization": `Bearer ${process.env.KORAPAY_SECRET_KEY}`
         }
