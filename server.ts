@@ -702,7 +702,7 @@ app.post("/api/admin/seed", async (req, res) => {
 });
 
 // Admin: Manual VCF Generation
-app.post("/api/admin/generate-vcf", async (req, res) => {
+app.all("/api/admin/generate-vcf", async (req, res) => {
   try {
     await generateDailyVCF();
     res.json({ message: "VCF generation triggered successfully" });
