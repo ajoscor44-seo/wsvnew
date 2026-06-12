@@ -22,15 +22,15 @@ const PORT = 3000;
 
 // Supabase Setup
 const supabaseUrl = process.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY;
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.error("WARNING: Supabase URL or Anon Key is missing from environment variables!");
+if (!supabaseUrl || !supabaseKey) {
+  console.error("WARNING: Supabase URL or Key is missing from environment variables!");
 }
 
 const supabase = createClient(
   supabaseUrl || "https://placeholder-url.supabase.co", 
-  supabaseAnonKey || "placeholder-anon-key"
+  supabaseKey || "placeholder-anon-key"
 );
 
 // Storage Setup
@@ -531,8 +531,33 @@ const generateDailyVCF = async () => {
     });
 
     const fileName = `contacts-${today}.vcf`;
-    const filePath = path.join(VCF_DIR, fileName);
-    fs.writeFileSync(filePath, vcfContent);
+
+    // Try to upload to Supabase Storage
+    let publicUrl = `/vcf/${fileName}`;
+    try {
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from("vcf-files")
+        .upload(fileName, vcfContent, {
+          contentType: "text/vcard",
+          upsert: true
+        });
+
+      if (uploadError) {
+        console.warn("Supabase Storage upload failed, falling back to local file write:", uploadError.message);
+        // Fallback to writing local file
+        const filePath = path.join(VCF_DIR, fileName);
+        fs.writeFileSync(filePath, vcfContent);
+      } else {
+        const { data: urlData } = supabase.storage
+          .from("vcf-files")
+          .getPublicUrl(fileName);
+        publicUrl = urlData.publicUrl;
+      }
+    } catch (storageErr: any) {
+      console.warn("Supabase Storage error, writing local file instead:", storageErr.message);
+      const filePath = path.join(VCF_DIR, fileName);
+      fs.writeFileSync(filePath, vcfContent);
+    }
 
     const { error: fileError } = await supabase
       .from("files")
@@ -542,13 +567,13 @@ const generateDailyVCF = async () => {
           date: today,
           count: contacts.length,
           size: (vcfContent.length / 1024).toFixed(2) + " KB",
-          url: `/vcf/${fileName}`,
+          url: publicUrl,
         },
       ], { onConflict: "name" });
 
     if (fileError) throw fileError;
 
-    console.log(`Generated ${fileName} with ${contacts.length} contacts.`);
+    console.log(`Generated ${fileName} with ${contacts.length} contacts. URL: ${publicUrl}`);
     await cleanupOldVCFs();
   } catch (error: any) {
     console.error("VCF generation error:", error);
@@ -576,6 +601,12 @@ const cleanupOldVCFs = async () => {
         if (fs.existsSync(filePath)) {
           fs.unlinkSync(filePath);
           console.log(`Deleted physical VCF file: ${file.name}`);
+        }
+        // Also delete from Supabase Storage
+        try {
+          await supabase.storage.from("vcf-files").remove([file.name]);
+        } catch (storageErr: any) {
+          console.warn(`Failed to delete old VCF file ${file.name} from Supabase Storage:`, storageErr.message);
         }
       }
 
@@ -709,9 +740,13 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-  });
+  if (!process.env.VERCEL) {
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+    });
+  }
 }
 
 startServer();
+
+export default app;
