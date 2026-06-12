@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { 
   Zap, 
   Check, 
@@ -16,8 +16,10 @@ import {
   ArrowRight,
   TrendingUp,
   Award,
-  ShieldCheck
+  ShieldCheck,
+  X
 } from "lucide-react";
+import { toast } from "sonner";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 
 interface ProductPlan {
@@ -33,7 +35,27 @@ interface ProductPlan {
 
 export const PremiumPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [selectedPlan, setSelectedPlan] = useState<string>("Better");
+  const [showPayModal, setShowPayModal] = useState(false);
+  const [targetPlan, setTargetPlan] = useState<ProductPlan | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    phoneNumber: "",
+    gender: "Male",
+    country: "NG",
+  });
+
+  const countries = [
+    { code: "NG", name: "Nigeria", flag: "🇳🇬", dialCode: "+234" },
+    { code: "GH", name: "Ghana", flag: "🇬🇭", dialCode: "+233" },
+    { code: "ZA", name: "South Africa", flag: "🇿🇦", dialCode: "+27" },
+    { code: "KE", name: "Kenya", flag: "🇰🇪", dialCode: "+254" },
+  ];
+
+  const selectedCountry = countries.find((c) => c.code === formData.country) || countries[0];
 
   // Read query parameters to auto-highlight chosen plan
   useEffect(() => {
@@ -69,7 +91,7 @@ export const PremiumPage = () => {
       priceNGN: "₦2,000",
       priceUSD: "$1.47",
       shortDesc: "Mid-tier package offering a larger contact base for increased WhatsApp status visibility and audience growth.",
-      fullDesc: "Take your WhatsApp growth to the next level with 10,000 active contacts. Designed for businesses and influencers seeking higher visibility, better engagement, and more opportunities to reach potential customers.",
+      fullDesc: "Grow your WhatsApp audience with 10,000 active contacts. Designed for businesses and influencers seeking higher visibility, better engagement, and more opportunities to reach potential customers.",
       features: [
         "High priority queue visibility",
         "10,000 active verified contacts",
@@ -98,11 +120,121 @@ export const PremiumPage = () => {
     }
   ];
 
-  const handleUpgrade = (planName: string) => {
-    const encodedText = encodeURIComponent(
-      `Hello WSV Support,\n\nI want to go Premium and subscribe to the *${planName}* plan.\n\nPlease guide me on how to proceed with the activation.`
-    );
-    window.open(`https://wa.me/2348103460237?text=${encodedText}`, "_blank");
+  const handleUpgradeClick = (plan: ProductPlan) => {
+    setTargetPlan(plan);
+    setShowPayModal(true);
+  };
+
+  const handlePaymentSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!targetPlan) return;
+
+    if (!formData.name) {
+      toast.error("Please enter your display name");
+      return;
+    }
+    if (!formData.phoneNumber) {
+      toast.error("Please enter your phone number");
+      return;
+    }
+
+    let finalPhone = formData.phoneNumber;
+    if (selectedCountry.dialCode && !finalPhone.startsWith("+") && !finalPhone.startsWith(selectedCountry.dialCode)) {
+      const cleanPhone = finalPhone.startsWith("0") ? finalPhone.substring(1) : finalPhone;
+      finalPhone = selectedCountry.dialCode + cleanPhone;
+    }
+
+    const cleanPhoneForEmail = finalPhone.replace(/\D/g, "");
+    const customerEmail = `${cleanPhoneForEmail}@wsv.com.ng`;
+
+    const planPrices: Record<string, number> = {
+      Good: 1000,
+      Better: 2000,
+      Best: 3000
+    };
+    const amount = planPrices[targetPlan.id] || 1000;
+    const paymentRef = `wsv_${cleanPhoneForEmail}_${Date.now()}`;
+
+    const korapayKey = import.meta.env.VITE_KORAPAY_PUBLIC_KEY;
+    if (!korapayKey) {
+      toast.error("Korapay public key is not configured");
+      return;
+    }
+
+    if (!(window as any).Korapay) {
+      toast.error("Payment gateway is loading, please try again in a moment");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      (window as any).Korapay.initialize({
+        key: korapayKey,
+        reference: paymentRef,
+        amount: amount,
+        currency: "NGN",
+        customer: {
+          name: formData.name,
+          email: customerEmail,
+        },
+        notification_url: window.location.origin + "/api/korapay/webhook",
+        onClose: () => {
+          setIsLoading(false);
+          toast.error("Payment modal closed");
+        },
+        onSuccess: async (data: any) => {
+          toast.success("Payment completed successfully! Syncing account...");
+          try {
+            const response = await fetch("/api/submit", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ 
+                ...formData, 
+                phoneNumber: finalPhone,
+                plan: targetPlan.id,
+                paymentReference: paymentRef 
+              }),
+            });
+
+            const text = await response.text();
+            let resData;
+            try {
+              resData = JSON.parse(text);
+            } catch (err) {
+              console.error("Invalid response body:", text);
+              throw new Error(`Server returned an invalid response (Status ${response.status})`);
+            }
+
+            if (response.ok) {
+              const fullUserData = {
+                name: formData.name,
+                phoneNumber: finalPhone,
+                businessName: formData.name,
+                plan: targetPlan.id,
+                referralCode: resData.referralCode,
+              };
+
+              localStorage.setItem("zar_user", JSON.stringify(fullUserData));
+              setShowPayModal(false);
+              toast.success("Successfully upgraded to Premium!");
+              navigate("/download-vcf");
+            } else {
+              toast.error(resData.error || "Upgrade failed, please contact support");
+            }
+          } catch (error: any) {
+            console.error("Upgrade error:", error);
+            toast.error(error.message || "Failed to update account status");
+          } finally {
+            setIsLoading(false);
+          }
+        }
+      });
+    } catch (err: any) {
+      console.error("Korapay initialize error:", err);
+      toast.error("Could not launch payment gateway");
+      setIsLoading(false);
+    }
   };
 
   // Structured product schemas to serve search crawlers
@@ -217,7 +349,7 @@ export const PremiumPage = () => {
                 </ul>
 
                 <button
-                  onClick={() => handleUpgrade(plan.name)}
+                  onClick={() => handleUpgradeClick(plan)}
                   className={`w-full py-4 rounded-xl font-bold uppercase tracking-wider text-xs flex items-center justify-center gap-2 transition-all cursor-pointer ${
                     plan.recommended
                       ? "bg-primary text-black shadow-lg shadow-primary/15 hover:scale-[1.02] hover:shadow-primary/25"
@@ -226,7 +358,7 @@ export const PremiumPage = () => {
                       : "bg-white/5 text-white hover:bg-white/10 hover:scale-[1.02] border border-white/10"
                   }`}
                 >
-                  Upgrade via WhatsApp
+                  Upgrade & Pay Now
                   <ArrowRight size={14} />
                 </button>
               </motion.div>
@@ -275,6 +407,142 @@ export const PremiumPage = () => {
           </div>
         </section>
       </main>
+
+      {/* Checkout Modal */}
+      <AnimatePresence>
+        {showPayModal && targetPlan && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => { if (!isLoading) setShowPayModal(false); }}
+              className="absolute inset-0 bg-black/80 backdrop-blur-md"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="glass-card w-full max-w-lg rounded-[2.5rem] overflow-hidden relative z-10 shadow-2xl border border-white/10 p-6 sm:p-10"
+            >
+              <button
+                disabled={isLoading}
+                onClick={() => setShowPayModal(false)}
+                className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors cursor-pointer disabled:cursor-not-allowed"
+              >
+                <X size={20} />
+              </button>
+
+              <div className="text-center mb-8">
+                <span className="text-primary font-bold uppercase tracking-[0.2em] text-[10px]">Upgrade Checkout</span>
+                <h2 className="text-2xl sm:text-3xl font-black font-headline tracking-tighter text-white mt-1">
+                  Activate {targetPlan.name.split("–")[1]?.trim() || targetPlan.name}
+                </h2>
+                <p className="text-on-surface-variant text-xs sm:text-sm font-semibold mt-1">
+                  Enter your contact details to authorize payment and initiate sync.
+                </p>
+              </div>
+
+              <form onSubmit={handlePaymentSubmit} className="space-y-5">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black uppercase tracking-[0.15em] text-primary/60 ml-1">Display Name</label>
+                  <input
+                    required
+                    disabled={isLoading}
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="w-full bg-surface-container-low border-2 border-transparent rounded-2xl py-3.5 px-4 focus:border-primary/10 focus:bg-surface-container-high transition-all text-sm outline-none font-bold text-on-surface placeholder:text-on-surface/20 shadow-inner disabled:opacity-50"
+                    placeholder="E.g. ZAR Media"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-black uppercase tracking-[0.15em] text-primary/60 ml-1">Sex</label>
+                    <div className="grid grid-cols-2 gap-2">
+                      {["Male", "Female"].map((sex) => (
+                        <button
+                          key={sex}
+                          type="button"
+                          disabled={isLoading}
+                          onClick={() => setFormData({ ...formData, gender: sex })}
+                          className={`py-3 rounded-xl font-bold text-[10px] uppercase tracking-widest transition-all border-2 disabled:opacity-50 ${
+                            formData.gender === sex
+                              ? "bg-primary text-black border-primary shadow-lg shadow-primary/10"
+                              : "bg-surface-container-low text-on-surface-variant/40 border-transparent hover:bg-surface-container"
+                          }`}
+                        >
+                          {sex}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-black uppercase tracking-[0.15em] text-primary/60 ml-1">Country</label>
+                    <select
+                      required
+                      disabled={isLoading}
+                      value={formData.country}
+                      onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+                      className="w-full bg-surface-container-low border-2 border-transparent rounded-xl py-3.5 px-3 focus:border-primary/10 focus:bg-surface-container-high transition-all text-xs outline-none font-bold text-on-surface shadow-inner disabled:opacity-50"
+                    >
+                      {countries.map((c) => (
+                        <option key={c.code} value={c.code} className="bg-surface text-on-surface">
+                          {c.flag} {c.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black uppercase tracking-[0.15em] text-primary/60 ml-1">WhatsApp Number</label>
+                  <div className="flex gap-2">
+                    <div className="bg-surface-container-high px-4 flex items-center justify-center rounded-2xl font-bold text-on-surface text-xs border border-white/5">
+                      {selectedCountry.dialCode}
+                    </div>
+                    <input
+                      required
+                      type="tel"
+                      disabled={isLoading}
+                      value={formData.phoneNumber}
+                      onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
+                      className="flex-1 bg-surface-container-low border-2 border-transparent rounded-2xl py-3.5 px-4 focus:border-primary/10 focus:bg-surface-container-high transition-all text-sm outline-none font-bold text-on-surface placeholder:text-on-surface/20 shadow-inner disabled:opacity-50"
+                      placeholder="e.g. 8030000000"
+                    />
+                  </div>
+                </div>
+
+                <div className="pt-4 flex gap-4">
+                  <button
+                    type="button"
+                    disabled={isLoading}
+                    onClick={() => setShowPayModal(false)}
+                    className="flex-1 bg-white/5 text-white border border-white/10 py-4 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-white/10 transition-all cursor-pointer disabled:opacity-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="flex-1 bg-primary text-black py-4 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-secondary hover:scale-[1.01] active:scale-[0.99] transition-all shadow-xl shadow-primary/10 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                  >
+                    {isLoading ? (
+                      <div className="w-5 h-5 border-3 border-white/30 border-t-white rounded-full animate-spin" />
+                    ) : (
+                      <>
+                        Pay {targetPlan.priceNGN}
+                        <ArrowRight size={14} />
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
