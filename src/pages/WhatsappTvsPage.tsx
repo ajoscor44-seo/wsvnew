@@ -42,6 +42,7 @@ export const WhatsappTvsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [showAddModal, setShowAddModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [dynamicTvs, setDynamicTvs] = useState<any[]>([]);
 
   const [formData, setFormData] = useState({
     tvName: "",
@@ -51,6 +52,23 @@ export const WhatsappTvsPage = () => {
   });
 
   const categories = ["All", "Entertainment", "General", "Sponsored"];
+
+  // Fetch dynamic TVs from the backend database
+  const fetchTvs = async () => {
+    try {
+      const res = await fetch("/api/tvs");
+      if (res.ok) {
+        const data = await res.json();
+        setDynamicTvs(data || []);
+      }
+    } catch (err) {
+      console.error("Failed to fetch dynamic TVs:", err);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchTvs();
+  }, []);
 
   const handleAddTvSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,15 +116,41 @@ export const WhatsappTvsPage = () => {
           toast.error("Payment modal closed");
         },
         onSuccess: async (data: any) => {
-          toast.success("Payment completed successfully! Redirecting to WhatsApp...");
-          setIsLoading(false);
-          setShowAddModal(false);
+          toast.success("Payment completed successfully! Syncing directory...");
+          try {
+            const response = await fetch("/api/tvs/submit", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                tvName: formData.tvName,
+                desc: formData.desc,
+                category: formData.category,
+                phoneNumber: formData.phoneNumber,
+                paymentReference: paymentRef
+              })
+            });
 
-          // Redirect to WhatsApp with TV info and payment details
-          const encodedText = encodeURIComponent(
-            `Hello Admin,\n\nI have completed payment (₦1,000) to get my WhatsApp TV listed on WSV.\n\nTV Name: ${formData.tvName}\nDescription: ${formData.desc}\nCategory: ${formData.category}\nWhatsApp Number: ${formData.phoneNumber}\nPayment Ref: ${paymentRef}\n\nPlease verify and add my TV to the directory.`
-          );
-          window.location.href = `https://wa.me/2348103460237?text=${encodedText}`;
+            if (!response.ok) {
+              const errData = await response.json().catch(() => ({}));
+              console.error("TV listing submit failed on backend:", errData);
+              toast.warning("Listing stored locally on device. Syncing to Admin via WhatsApp.");
+            } else {
+              toast.success("TV Listing sync complete!");
+              fetchTvs(); // Refresh listings on UI
+            }
+          } catch (err: any) {
+            console.error("Failed to submit TV data:", err);
+            toast.warning("Network issue. Proceeding to WhatsApp to complete listing.");
+          } finally {
+            setIsLoading(false);
+            setShowAddModal(false);
+            
+            // Redirect to WhatsApp with TV info and payment details
+            const encodedText = encodeURIComponent(
+              `Hello Admin,\n\nI have completed payment (₦1,000) to get my WhatsApp TV listed on WSV.\n\nTV Name: ${formData.tvName}\nDescription: ${formData.desc}\nCategory: ${formData.category}\nWhatsApp Number: ${formData.phoneNumber}\nPayment Ref: ${paymentRef}\n\nPlease verify and add my TV to the directory.`
+            );
+            window.location.href = `https://wa.me/2348103460237?text=${encodedText}`;
+          }
         }
       });
     } catch (err: any) {
@@ -116,10 +160,29 @@ export const WhatsappTvsPage = () => {
     }
   };
 
-  const filteredTvs = TV_DATA.filter(tv => {
+  // Merge dynamic TVs with static TV_DATA
+  const formattedDynamicTvs = dynamicTvs.map(tv => ({
+    name: tv.name,
+    desc: tv.description,
+    category: tv.category,
+    link: tv.link || `https://wa.me/${tv.phone_number.replace(/\D/g, "")}`,
+    number: tv.phone_number,
+    email: tv.email || "",
+    website: tv.website || "",
+    address: tv.address || ""
+  }));
+
+  const combinedTvs = [
+    ...formattedDynamicTvs,
+    ...TV_DATA.filter(staticTv => 
+      !formattedDynamicTvs.some(dynTv => dynTv.name.toLowerCase() === staticTv.name.toLowerCase())
+    )
+  ];
+
+  const filteredTvs = combinedTvs.filter(tv => {
     const matchesSearch = tv.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           tv.category.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === "All" || tv.category.includes(selectedCategory);
+    const matchesCategory = selectedCategory === "All" || tv.category.toLowerCase().includes(selectedCategory.toLowerCase());
     return matchesSearch && matchesCategory;
   });
 

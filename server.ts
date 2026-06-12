@@ -78,6 +78,28 @@ app.post("/api/submit", async (req, res) => {
         return res.status(400).json({ error: "Payment verification failed" });
       }
       console.log(`Payment verified successfully for ref: ${paymentReference}`);
+
+      // Log payment transaction to the payments table
+      try {
+        const amount = plan === "Good" ? 1000 : plan === "Better" ? 2000 : plan === "Best" ? 3000 : 0;
+        const { error: payError } = await supabase
+          .from("payments")
+          .upsert([{
+            reference: paymentReference,
+            amount: amount,
+            status: "success",
+            payment_type: "premium",
+            plan: plan,
+            customer_name: name || "User",
+            customer_email: `${normalized.replace("+", "")}@wsv.com.ng`,
+            phone_number: normalized
+          }], { onConflict: "reference" });
+        if (payError) {
+          console.error("Failed to insert/upsert payment record:", payError.message);
+        }
+      } catch (payErr: any) {
+        console.error("Error logging payment to DB:", payErr.message);
+      }
     } catch (err: any) {
       console.error("Korapay verification API error:", err.message);
       return res.status(500).json({ error: "Payment verification service unavailable" });
@@ -270,6 +292,96 @@ app.post("/api/submit", async (req, res) => {
   }
 });
 
+// Submit WhatsApp TV listing
+app.post("/api/tvs/submit", async (req, res) => {
+  const { tvName, desc, category, phoneNumber, paymentReference } = req.body;
+  if (!tvName || !desc || !phoneNumber || !paymentReference) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  // Normalize number
+  let normalized = phoneNumber.replace(/\D/g, "");
+  if (normalized.startsWith("0")) normalized = "234" + normalized.substring(1);
+  if (!normalized.startsWith("+")) normalized = "+" + normalized;
+
+  try {
+    // Verify payment reference with Korapay
+    try {
+      const verifyRes = await fetch(`https://api.korapay.com/v1/charges/verify/${paymentReference}`, {
+        headers: {
+          "Authorization": `Bearer ${process.env.KORAPAY_SECRET_KEY}`
+        }
+      });
+      const verifyData: any = await verifyRes.json();
+      if (!verifyRes.ok || verifyData.data?.status !== "success") {
+        return res.status(400).json({ error: "Payment verification failed" });
+      }
+      console.log(`TV Payment verified successfully for ref: ${paymentReference}`);
+    } catch (err: any) {
+      console.error("Korapay verification API error for TV listing:", err.message);
+      return res.status(500).json({ error: "Payment verification service unavailable" });
+    }
+
+    // Insert or update payment record
+    const { error: payError } = await supabase
+      .from("payments")
+      .upsert([{
+        reference: paymentReference,
+        amount: 1000,
+        status: "success",
+        payment_type: "tv_listing",
+        plan: "TV_Listing",
+        customer_name: tvName,
+        customer_email: `${normalized.replace("+", "")}@wsv.com.ng`,
+        phone_number: normalized
+      }], { onConflict: "reference" });
+
+    if (payError) {
+      console.error("Failed to log TV payment record:", payError.message);
+    }
+
+    // Insert TV listing
+    const { data: tvData, error: tvError } = await supabase
+      .from("whatsapp_tvs")
+      .upsert([{
+        name: tvName,
+        description: desc,
+        category: category,
+        phone_number: normalized,
+        link: `https://wa.me/${normalized.replace("+", "")}`,
+        payment_reference: paymentReference,
+        status: "approved"
+      }], { onConflict: "payment_reference" })
+      .select()
+      .single();
+
+    if (tvError) throw tvError;
+
+    res.json({ message: "WhatsApp TV listing submitted successfully", tv: tvData });
+  } catch (error: any) {
+    console.error("TV listing submission error:", error.message);
+    res.status(500).json({ error: error.message || "Internal server error" });
+  }
+});
+
+// Fetch approved WhatsApp TV listings
+app.get("/api/tvs", async (req, res) => {
+  try {
+    const { data: tvs, error } = await supabase
+      .from("whatsapp_tvs")
+      .select("*")
+      .eq("status", "approved")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+    res.json(tvs || []);
+  } catch (error: any) {
+    console.error("Fetch TVs error:", error.message);
+    res.status(500).json({ error: error.message || "Internal server error" });
+  }
+});
+
+
 // Login (Check if phone exists)
 app.post("/api/login", async (req, res) => {
   const { phoneNumber } = req.body;
@@ -431,53 +543,120 @@ app.post("/api/korapay/webhook", async (req: any, res) => {
 
   if (event === "charge.success" && data.status === "success") {
     const reference = data.reference;
-    // Format: wsv_<phone_digits>_<timestamp>
+    const amount = data.amount;
+    const customer = data.customer;
     const parts = reference.split("_");
-    if (parts.length >= 2 && parts[0] === "wsv") {
+    
+    if (parts.length >= 2) {
+      const prefix = parts[0];
       const cleanPhone = parts[1];
       const normalized = "+" + cleanPhone;
 
-      const amount = data.amount;
-      let plan = "Free";
-      let premiumDays = 0;
-      if (amount >= 3000) {
-        plan = "Best";
-        premiumDays = 90;
-      } else if (amount >= 2000) {
-        plan = "Better";
-        premiumDays = 60;
-      } else if (amount >= 1000) {
-        plan = "Good";
-        premiumDays = 30;
-      }
+      if (prefix === "wsv") {
+        let plan = "Free";
+        let premiumDays = 0;
+        if (amount >= 3000) {
+          plan = "Best";
+          premiumDays = 90;
+        } else if (amount >= 2000) {
+          plan = "Better";
+          premiumDays = 60;
+        } else if (amount >= 1000) {
+          plan = "Good";
+          premiumDays = 30;
+        }
 
-      if (premiumDays > 0) {
+        // 1. Log/upsert payment record
         try {
-          // Fetch user
-          const { data: user, error: userError } = await supabase
-            .from("users")
-            .select("id, premium_until")
-            .eq("phone_number", normalized)
+          const { error: payError } = await supabase
+            .from("payments")
+            .upsert([{
+              reference: reference,
+              amount: amount,
+              status: "success",
+              payment_type: "premium",
+              plan: plan,
+              customer_name: customer?.name || "User",
+              customer_email: customer?.email || `${cleanPhone}@wsv.com.ng`,
+              phone_number: normalized
+            }], { onConflict: "reference" });
+          if (payError) {
+            console.error("Webhook payment upsert error:", payError.message);
+          }
+        } catch (payErr: any) {
+          console.error("Webhook payment logging error for premium:", payErr.message);
+        }
+
+        // 2. Perform user premium upgrade
+        if (premiumDays > 0) {
+          try {
+            const { data: user, error: userError } = await supabase
+              .from("users")
+              .select("id, premium_until")
+              .eq("phone_number", normalized)
+              .single();
+
+            if (user && !userError) {
+              const currentPremium = user.premium_until ? new Date(user.premium_until) : new Date();
+              const newPremiumUntil = addDays(isAfter(new Date(), currentPremium) ? new Date() : currentPremium, premiumDays);
+
+              await supabase
+                .from("users")
+                .update({
+                  plan: plan,
+                  premium_until: newPremiumUntil.toISOString()
+                })
+                .eq("id", user.id);
+
+              console.log(`Successfully upgraded user ${normalized} via webhook to ${plan} until ${newPremiumUntil.toISOString()}`);
+            } else {
+              console.error(`User with phone ${normalized} not found for webhook upgrade`);
+            }
+          } catch (err: any) {
+            console.error("Webhook user upgrade error:", err.message);
+          }
+        }
+      } else if (prefix === "wsvtv") {
+        // 1. Log/upsert payment record
+        try {
+          const { error: payError } = await supabase
+            .from("payments")
+            .upsert([{
+              reference: reference,
+              amount: amount,
+              status: "success",
+              payment_type: "tv_listing",
+              plan: "TV_Listing",
+              customer_name: customer?.name || "TV User",
+              customer_email: customer?.email || `${cleanPhone}@wsv.com.ng`,
+              phone_number: normalized
+            }], { onConflict: "reference" });
+          if (payError) {
+            console.error("Webhook TV listing payment upsert error:", payError.message);
+          }
+        } catch (payErr: any) {
+          console.error("Webhook payment logging error for TV listing:", payErr.message);
+        }
+
+        // 2. Approve the TV listing
+        try {
+          const { data: tvListing, error: tvError } = await supabase
+            .from("whatsapp_tvs")
+            .select("id, name")
+            .eq("payment_reference", reference)
             .single();
 
-          if (user && !userError) {
-            const currentPremium = user.premium_until ? new Date(user.premium_until) : new Date();
-            const newPremiumUntil = addDays(isAfter(new Date(), currentPremium) ? new Date() : currentPremium, premiumDays);
-
+          if (tvListing && !tvError) {
             await supabase
-              .from("users")
-              .update({
-                plan: plan,
-                premium_until: newPremiumUntil.toISOString()
-              })
-              .eq("id", user.id);
-
-            console.log(`Successfully upgraded user ${normalized} via webhook to ${plan} until ${newPremiumUntil.toISOString()}`);
+              .from("whatsapp_tvs")
+              .update({ status: "approved" })
+              .eq("id", tvListing.id);
+            console.log(`Successfully approved TV listing ${tvListing.name} with reference: ${reference}`);
           } else {
-            console.error(`User with phone ${normalized} not found for webhook upgrade`);
+            console.log(`Webhook received for TV payment, listing not found yet (or pending submission): ${reference}`);
           }
         } catch (err: any) {
-          console.error("Webhook processing error:", err.message);
+          console.error("Webhook TV approval error:", err.message);
         }
       }
     }
