@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import React, { useState } from "react";
 import { 
   Tv, 
@@ -16,8 +16,10 @@ import {
   PlusCircle,
   TrendingUp,
   Star,
-  CheckCircle2
+  CheckCircle2,
+  X
 } from "lucide-react";
+import { toast } from "sonner";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import { Link } from "react-router-dom";
 
@@ -38,8 +40,81 @@ const TV_DATA = [
 export const WhatsappTvsPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const categories = ["All", "Entertaiment", "General", "Sponsored"];
+  const [formData, setFormData] = useState({
+    tvName: "",
+    desc: "",
+    category: "Entertainment",
+    phoneNumber: "",
+  });
+
+  const categories = ["All", "Entertainment", "General", "Sponsored"];
+
+  const handleAddTvSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.tvName || !formData.desc || !formData.phoneNumber) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    const cleanPhone = formData.phoneNumber.replace(/\D/g, "");
+    if (!cleanPhone) {
+      toast.error("Please enter a valid phone number");
+      return;
+    }
+
+    const paymentRef = `wsvtv_${cleanPhone}_${Date.now()}`;
+    const amount = 1000;
+    const customerEmail = `${cleanPhone}@wsv.com.ng`;
+
+    const korapayKey = import.meta.env.VITE_KORAPAY_PUBLIC_KEY;
+    if (!korapayKey) {
+      toast.error("Korapay public key is not configured");
+      return;
+    }
+
+    if (!(window as any).Korapay) {
+      toast.error("Payment gateway is loading, please try again in a moment");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      (window as any).Korapay.initialize({
+        key: korapayKey,
+        reference: paymentRef,
+        amount: amount,
+        currency: "NGN",
+        customer: {
+          name: formData.tvName,
+          email: customerEmail,
+        },
+        notification_url: window.location.origin + "/api/korapay/webhook",
+        onClose: () => {
+          setIsLoading(false);
+          toast.error("Payment modal closed");
+        },
+        onSuccess: async (data: any) => {
+          toast.success("Payment completed successfully! Redirecting to WhatsApp...");
+          setIsLoading(false);
+          setShowAddModal(false);
+
+          // Redirect to WhatsApp with TV info and payment details
+          const encodedText = encodeURIComponent(
+            `Hello Admin,\n\nI have completed payment (₦1,000) to get my WhatsApp TV listed on WSV.\n\nTV Name: ${formData.tvName}\nDescription: ${formData.desc}\nCategory: ${formData.category}\nWhatsApp Number: ${formData.phoneNumber}\nPayment Ref: ${paymentRef}\n\nPlease verify and add my TV to the directory.`
+          );
+          window.location.href = `https://wa.me/2348103460237?text=${encodedText}`;
+        }
+      });
+    } catch (err: any) {
+      console.error("Korapay initialize error:", err);
+      toast.error("Could not launch payment gateway");
+      setIsLoading(false);
+    }
+  };
 
   const filteredTvs = TV_DATA.filter(tv => {
     const matchesSearch = tv.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -75,10 +150,13 @@ export const WhatsappTvsPage = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 mt-8 sm:mt-12">
-            <a href="#join" className="btn-primary w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 rounded-xl sm:rounded-2xl flex items-center justify-center gap-2 sm:gap-3 shadow-lg shadow-primary/15">
+            <button 
+              onClick={() => setShowAddModal(true)}
+              className="btn-primary w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 rounded-xl sm:rounded-2xl flex items-center justify-center gap-2 sm:gap-3 shadow-lg shadow-primary/15 cursor-pointer"
+            >
               <PlusCircle size={18} />
               Add Your TV
-            </a>
+            </button>
             <button className="bg-surface-container-high border border-white/10 w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 rounded-xl sm:rounded-2xl font-bold text-on-surface hover:bg-surface-container-highest transition-all flex items-center justify-center gap-2 sm:gap-3 text-xs sm:text-sm uppercase tracking-widest shadow-lg">
               <TrendingUp size={18} />
               View Top TVs
@@ -207,15 +285,13 @@ export const WhatsappTvsPage = () => {
                 Reach over 2 million creators in Nigeria. Add your TV for only ₦1,000 and get featured at the top of our directory.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 pt-2 sm:pt-4">
-                <a 
-                  href="https://wa.me/2348103460237?text=Hello%20Admin%2C%20I%20want%20to%20get%20my%20WhatsApp%20TV%20verified%20and%20listed%20on%20WSV." 
-                  target="_blank" 
-                  rel="noreferrer" 
-                  className="bg-accent text-black w-full sm:w-auto px-8 sm:px-12 py-4 sm:py-5 md:py-6 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base md:text-lg shadow-xl shadow-accent/30 hover:scale-105 transition-transform flex items-center justify-center gap-3 sm:gap-4"
+                <button 
+                  onClick={() => setShowAddModal(true)}
+                  className="bg-accent text-black w-full sm:w-auto px-8 sm:px-12 py-4 sm:py-5 md:py-6 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base md:text-lg shadow-xl shadow-accent/30 hover:scale-105 transition-transform flex items-center justify-center gap-3 sm:gap-4 cursor-pointer"
                 >
                   Feature My TV
                   <ArrowRight size={20} />
-                </a>
+                </button>
               </div>
             </div>
             <div className="hidden lg:block">
@@ -248,6 +324,126 @@ export const WhatsappTvsPage = () => {
           </div>
         </section>
       </div>
+
+      {/* Add TV Modal */}
+      <AnimatePresence>
+        {showAddModal && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => { if (!isLoading) setShowAddModal(false); }}
+              className="absolute inset-0 bg-black/80 backdrop-blur-md"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="glass-card w-full max-w-lg rounded-[2.5rem] overflow-hidden relative z-10 shadow-2xl border border-white/10 p-6 sm:p-10"
+            >
+              <button
+                disabled={isLoading}
+                onClick={() => setShowAddModal(false)}
+                className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors cursor-pointer disabled:cursor-not-allowed"
+              >
+                <X size={20} />
+              </button>
+
+              <div className="text-center mb-8">
+                <span className="text-primary font-bold uppercase tracking-[0.2em] text-[10px]">TV Directory Listing</span>
+                <h2 className="text-2xl sm:text-3xl font-black font-headline tracking-tighter text-white mt-1">
+                  Add Your WhatsApp TV
+                </h2>
+                <p className="text-on-surface-variant text-xs sm:text-sm font-semibold mt-1">
+                  Get listed and verified in Nigeria's #1 directory for ₦1,000.
+                </p>
+              </div>
+
+              <form onSubmit={handleAddTvSubmit} className="space-y-5">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black uppercase tracking-[0.15em] text-primary/60 ml-1">TV Name</label>
+                  <input
+                    required
+                    disabled={isLoading}
+                    value={formData.tvName}
+                    onChange={(e) => setFormData({ ...formData, tvName: e.target.value })}
+                    className="w-full bg-surface-container-low border-2 border-transparent rounded-2xl py-3.5 px-4 focus:border-primary/10 focus:bg-surface-container-high transition-all text-sm outline-none font-bold text-on-surface placeholder:text-on-surface/20 shadow-inner disabled:opacity-50"
+                    placeholder="E.g. Bamtheblogger"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black uppercase tracking-[0.15em] text-primary/60 ml-1">Short Description</label>
+                  <input
+                    required
+                    disabled={isLoading}
+                    value={formData.desc}
+                    onChange={(e) => setFormData({ ...formData, desc: e.target.value })}
+                    className="w-full bg-surface-container-low border-2 border-transparent rounded-2xl py-3.5 px-4 focus:border-primary/10 focus:bg-surface-container-high transition-all text-sm outline-none font-bold text-on-surface placeholder:text-on-surface/20 shadow-inner disabled:opacity-50"
+                    placeholder="E.g. Entertainment and lifestyle updates"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-black uppercase tracking-[0.15em] text-primary/60 ml-1">Category</label>
+                    <select
+                      required
+                      disabled={isLoading}
+                      value={formData.category}
+                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                      className="w-full bg-surface-container-low border-2 border-transparent rounded-xl py-3.5 px-3 focus:border-primary/10 focus:bg-surface-container-high transition-all text-xs outline-none font-bold text-on-surface shadow-inner disabled:opacity-50"
+                    >
+                      <option value="Entertainment" className="bg-surface text-on-surface">Entertainment</option>
+                      <option value="General" className="bg-surface text-on-surface">General</option>
+                      <option value="Sponsored" className="bg-surface text-on-surface">Sponsored</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-black uppercase tracking-[0.15em] text-primary/60 ml-1">WhatsApp Number</label>
+                    <input
+                      required
+                      type="tel"
+                      disabled={isLoading}
+                      value={formData.phoneNumber}
+                      onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
+                      className="w-full bg-surface-container-low border-2 border-transparent rounded-2xl py-3.5 px-4 focus:border-primary/10 focus:bg-surface-container-high transition-all text-sm outline-none font-bold text-on-surface placeholder:text-on-surface/20 shadow-inner disabled:opacity-50"
+                      placeholder="e.g. 08123456789"
+                    />
+                  </div>
+                </div>
+
+                <div className="pt-4 flex gap-4">
+                  <button
+                    type="button"
+                    disabled={isLoading}
+                    onClick={() => setShowAddModal(false)}
+                    className="flex-1 bg-white/5 text-white border border-white/10 py-4 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-white/10 transition-all cursor-pointer disabled:opacity-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="flex-1 bg-primary text-black py-4 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-secondary hover:scale-[1.01] active:scale-[0.99] transition-all shadow-xl shadow-primary/10 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                  >
+                    {isLoading ? (
+                      <div className="w-5 h-5 border-3 border-white/30 border-t-white rounded-full animate-spin" />
+                    ) : (
+                      <>
+                        Pay ₦1,000
+                        <ArrowRight size={14} />
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
